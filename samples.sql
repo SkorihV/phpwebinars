@@ -9,6 +9,17 @@ CREATE TABLE `books` (
 ALTER TABLE `books` ADD `name333` varchar(255) NOT NULL DEFAULT '';
 
 
+CREATE TABLE `categories` (	`id` int unsigned NOT NULL AUTO_INCREMENT,	`name` varchar(255) NOT NULL DEFAULT '',PRIMARY KEY(id))ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE products ADD (
+	`article` int unsigned,
+	`price` double unsigned,
+	`amount, int unsigned,
+	`discription` varchar(255),
+	`категории_id` int
+)
+
+
 INSERT INTO `books`(`name`) VALUES ('book8');
 
 SELECT `id`, `name` FROM `books`;

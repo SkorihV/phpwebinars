@@ -1,43 +1,34 @@
 <?php
-$host = '127.0.0.1';
-$user = 'root';
-$password = '';
-$database = 'phpwebinars';
+require_once "config.php";
 
-$connect = mysqli_connect($host, $user, $password, $database);
-
-if (mysqli_connect_errno()){
-    $error = mysqli_connect_error();
-    exit;
-}
+$connect = connect();
 
 $id = $_GET['id'] ?? 0;
 $id = (int) $id;
 
-$book = [];
+$product = [];
 
 if ($id) {
-    $query = "SELECT * FROM books WHERE id = $id";
-    $result = mysqli_query($connect, $query);
-    $book = mysqli_fetch_assoc($result);
+    $query = "SELECT * FROM products WHERE id = $id";
+    $result = query($connect, $query);
+    $product = mysqli_fetch_assoc($result);
 
-    if (is_null($book)) {
-        $book = [];
+    if (is_null($product)) {
+        $product = [];
     }
 }
 
 if (!empty($_POST)){
     $id = $_POST["id"] ?? 0;
     $name = $_POST["name"] ?? '';
-    $year = $_POST["year"] ?? '';
+    $article = $_POST["article"] ?? '';
+    $price = $_POST["price"] ?? '';
+    $amount = $_POST["amount"] ?? '';
+    $description = $_POST["description"] ?? '';
 
-    $query = "UPDATE books SET name = '$name', year = '$year' WHERE id = $id";
-    $result = mysqli_query($connect, $query);
+    $query = "UPDATE products SET name = '$name', article = '$article', price = '$price', amount = '$amount', description = '$description' WHERE id = $id";
+    $result = query($connect, $query);
 
-    if (mysqli_errno($connect)){
-        var_dump(mysqli_error($connect));
-        exit;
-    }
 
     if(mysqli_affected_rows($connect)){
         header('Location:/');
@@ -45,16 +36,6 @@ if (!empty($_POST)){
         die("Произошла ошибка с отправлением данных");
     }
 }
-?>
-<br>
-<br>
-<form method="post">
-    <input type="hidden" name="id" value="<?php echo $book['id'] ?? 0; ?>">
-    <label>
-       Название книги: <input type="text" name="name" required value="<?php echo $book['name'] ?? ''; ?>">
-    </label>
-    <label>
-        Год издания: <input type="number" name="year" required value="<?php echo $book['year'] ?? ''; ?>">
-    </label>
-    <input type="submit" value="Сохранить">
-</form>
+
+$smarty->assign("product", $product);
+$smarty->display("products/edit.tpl");
