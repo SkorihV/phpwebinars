@@ -1,5 +1,5 @@
 <?php
-require_once "config.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../config/config.php";
 
 $connect = connect();
 
@@ -31,7 +31,7 @@ if (!empty($_POST)){
 
 
     if(mysqli_affected_rows($connect)){
-        header('Location:/');
+        header('Location:/products/list');
     } else {
         die("Произошла ошибка с отправлением данных");
     }

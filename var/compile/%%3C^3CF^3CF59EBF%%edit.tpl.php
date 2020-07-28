@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2020-07-27 19:26:18
+<?php /* Smarty version 2.6.31, created on 2020-07-28 13:47:57
          compiled from products/edit.tpl */ ?>
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "header.tpl", 'smarty_include_vars' => array('h1' => "Редактирование товаров")));

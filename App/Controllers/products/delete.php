@@ -1,5 +1,5 @@
 <?php
-require_once "config.php";
+require_once $_SERVER['DOCUMENT_ROOT'] . "/../config/config.php";
 
 $id = $_POST['id'] ?? 0;
 $id = (int) $id;
@@ -14,7 +14,7 @@ $query = "DELETE FROM products WHERE id = $id";
 $result = query($connect, $query);
 
 if(mysqli_affected_rows($connect)){
-    header('Location:/');
+    header('Location:/products/list');
 } else {
     die("Произошла ошибка с отправлением данных");
 }
