@@ -1,41 +1,27 @@
 <?php
-require_once $_SERVER['DOCUMENT_ROOT'] . "/../config/config.php";
-
-$connect = connect();
-
 $id = $_GET['id'] ?? 0;
 $id = (int) $id;
 
 $product = [];
 
 if ($id) {
-    $query = "SELECT * FROM products WHERE id = $id";
-    $result = query($connect, $query);
-    $product = mysqli_fetch_assoc($result);
-
-    if (is_null($product)) {
-        $product = [];
-    }
+    $product = get_product_by_id($connect,$id);
 }
 
 if (!empty($_POST)){
-    $id = $_POST["id"] ?? 0;
-    $name = $_POST["name"] ?? '';
-    $article = $_POST["article"] ?? '';
-    $price = $_POST["price"] ?? '';
-    $amount = $_POST["amount"] ?? '';
-    $description = $_POST["description"] ?? '';
-
-    $query = "UPDATE products SET name = '$name', article = '$article', price = '$price', amount = '$amount', description = '$description' WHERE id = $id";
-    $result = query($connect, $query);
+    $product = get_product_from_post();
+    $edited = update_product_by_id($connect, $id, $product);
 
 
-    if(mysqli_affected_rows($connect)){
+    if($edited){
         header('Location:/products/list');
     } else {
         die("Произошла ошибка с отправлением данных");
     }
 }
+$categories = get_category_list($connect);
+
+$smarty->assign("categories", $categories);
 
 $smarty->assign("product", $product);
 $smarty->display("products/edit.tpl");

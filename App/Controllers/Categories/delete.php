@@ -5,11 +5,11 @@ if (!$id) {
     die ("Ошибка идентификатора");
 }
 
-$deleted = delete_product_by_id($connect, $id);
+$deleted = delete_category_by_id($connect, $id);
 
 
 if($deleted){
-    header('Location:/products/list');
+    header('Location:/categories/list');
 } else {
     die("Произошла ошибка с отправлением данных");
 }

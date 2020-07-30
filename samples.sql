@@ -1,5 +1,30 @@
 
 /*
+
+
+
+ CREATE TABLE `products` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `article` int unsigned DEFAULT NULL,
+  `price` double unsigned DEFAULT NULL,
+  `amount` int unsigned DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `category_id` int unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8
+
+
+ CREATE TABLE `categories` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+
+
+
+
+
 CREATE TABLE `books` (
 	`id` int unsigned NOT NULL AUTO_INCREMENT,
 	`name` varchar(255) NOT NULL DEFAULT '',
