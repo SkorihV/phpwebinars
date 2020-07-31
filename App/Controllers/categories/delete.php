@@ -1,15 +1,13 @@
 <?php
-$id = $_POST['id'] ?? 0;
-$id = (int) $id;
+$id = Request::getIntFromPost("id");
 if (!$id) {
     die ("Ошибка идентификатора");
 }
 
 $deleted = Category::deleteById($id);
 
-
 if($deleted){
-    header('Location:/categories/list');
+    Response::redirect('/categories/list');
 } else {
     die("Произошла ошибка с отправлением данных");
 }

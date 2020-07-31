@@ -1,6 +1,5 @@
 <?php
-$id = $_GET['id'] ?? 0;
-$id = (int) $id;
+$id = Request::getIntFromGet("id");
 
 $category = [];
 
@@ -8,13 +7,13 @@ if ($id) {
     $category = Category::getById($id);
 }
 
-if (!empty($_POST)){
+if (Request::isPost()){
     $category = Category::getDataFromPost();
     $edited = Category::updateById($id, $category);
 
 
     if($edited){
-        header('Location:/categories/list');
+        Response::redirect('/categories/list');
     } else {
         die("Произошла ошибка с отправлением данных");
     }

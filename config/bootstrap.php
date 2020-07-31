@@ -9,7 +9,7 @@ if($requestUri == "/"){
     $requestUri = "/index";
 }
 
-$categories = Category::getList($connect);
+$categories = Category::getList();
 $smarty->assign("categories", $categories);
 
 $controller_path = $_SERVER['DOCUMENT_ROOT'] . '/../App/Controllers' . $requestUri . '.php';

@@ -1,7 +1,7 @@
 <?php
 /*Показываем товары в рамках одной категории*/
 
-$category_id = (int) ($_GET["id"] ?? 0);
+$category_id = Request::getIntFromGet("id");
 $category = Category::getById($category_id);
 
 

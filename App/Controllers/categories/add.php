@@ -1,10 +1,10 @@
 <?php
-if (!empty($_POST)){
+if (Request::isPost()){
     $category = Category::getDataFromPost();
     $inserted = Category::add($category);
 
     if($inserted){
-        header('Location: /categories/list');
+        Response::redirect('/categories/list');
     } else {
         die("Произошла ошибка с отправлением данных");
     }

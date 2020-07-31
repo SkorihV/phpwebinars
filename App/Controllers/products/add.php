@@ -1,10 +1,10 @@
 <?php
-if (!empty($_POST)){
+if (Request::isPost()){
     $product = Product::getDataFromPost();
     $inserted = Product::add($product);
 
     if($inserted){
-        header('Location: /products/list');
+        Response::redirect('/products/list');
     } else {
         die("Произошла ошибка с отправлением данных");
     }
