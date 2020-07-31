@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2020-07-30 10:35:20
+<?php /* Smarty version 2.6.31, created on 2020-07-31 08:02:17
          compiled from products/form.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'products/form.tpl', 42, false),)), $this); ?>
@@ -49,7 +49,7 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', '
     </div>
     <div class="input-wrap">
         <label>
-        Описание: <textarea name="description"><?php echo $this->_tpl_vars['product']['description']; ?>
+        Описание: <textarea style="resize: auto;" name="description"><?php echo $this->_tpl_vars['product']['description']; ?>
 </textarea>
         </label>
     </div>

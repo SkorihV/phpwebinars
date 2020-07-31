@@ -36,7 +36,7 @@
     </div>
     <div class="input-wrap">
         <label>
-        Описание: <textarea name="description">{$product.description}</textarea>
+        Описание: <textarea style="resize: auto;" name="description">{$product.description}</textarea>
         </label>
     </div>
         <input type="submit" value="{$submit_name|default:'Сохранить'}">

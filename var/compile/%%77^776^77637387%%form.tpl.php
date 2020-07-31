@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2020-07-30 10:04:01
+<?php /* Smarty version 2.6.31, created on 2020-07-31 07:57:39
          compiled from categories/form.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
 smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'categories/form.tpl', 9, false),)), $this); ?>
@@ -8,7 +8,7 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', '
 ">
     <div class="input-wrap">
         <label>
-          Название категории: <input type="text" name="name" required value="<?php echo $this->_tpl_vars['category']['name']; ?>
+          Название категории: <input type="text" name="name" autofocus required value="<?php echo $this->_tpl_vars['category']['name']; ?>
 ">
         </label>
     </div>
