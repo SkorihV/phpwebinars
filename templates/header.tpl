@@ -3,7 +3,7 @@
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" >
+	<!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" >-->
 	<link rel="stylesheet" href="/assets/styles.css">
 	<title>{$h1}</title>
 </head>
@@ -22,7 +22,7 @@
 	
 	<div class="row">
 		<div class="col-3">
-			<nav class="nav flex-dolumn nav-pills">
+			<nav class="nav flex-column nav-pills">
 				{foreach from=$categories item=category}
 				<a href="/categories/view?id={$category.id}" class="nav-link  w-100 {if $category.id == $current_category.id}active{/if}">{$category.name}</a>
 				{/foreach}

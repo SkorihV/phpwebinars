@@ -1,5 +1,5 @@
 <?php
-$categories = get_category_list($connect);
+$categories = Category::getList();
 
 $smarty->assign('categories', $categories);
 $smarty->display('categories/index.tpl');

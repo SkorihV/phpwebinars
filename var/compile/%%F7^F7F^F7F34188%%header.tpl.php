@@ -1,11 +1,11 @@
-<?php /* Smarty version 2.6.31, created on 2020-07-30 17:22:13
+<?php /* Smarty version 2.6.31, created on 2020-07-31 11:01:39
          compiled from header.tpl */ ?>
 <!DOCTYPE html>
 <html lang="ru">
 <head>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta charset="UTF-8">
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" >
+	<!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" >-->
 	<link rel="stylesheet" href="/assets/styles.css">
 	<title><?php echo $this->_tpl_vars['h1']; ?>
 </title>
@@ -25,7 +25,7 @@
 	
 	<div class="row">
 		<div class="col-3">
-			<nav class="nav flex-dolumn nav-pills">
+			<nav class="nav flex-column nav-pills">
 				<?php $_from = $this->_tpl_vars['categories']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['category']):
 ?>

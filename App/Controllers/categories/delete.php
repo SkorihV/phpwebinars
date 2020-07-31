@@ -5,7 +5,7 @@ if (!$id) {
     die ("Ошибка идентификатора");
 }
 
-$deleted = delete_category_by_id($connect, $id);
+$deleted = Category::deleteById($id);
 
 
 if($deleted){

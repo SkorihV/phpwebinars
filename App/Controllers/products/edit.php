@@ -5,12 +5,12 @@ $id = (int) $id;
 $product = [];
 
 if ($id) {
-    $product = get_product_by_id($connect,$id);
+    $product = Product::getById($id);
 }
 
 if (!empty($_POST)){
-    $product = get_product_from_post();
-    $edited = update_product_by_id($connect, $id, $product);
+    $product = Product::getDataFromPost();
+    $edited = Product::updateById( $id, $product);
 
 
     if($edited){
@@ -19,7 +19,7 @@ if (!empty($_POST)){
         die("Произошла ошибка с отправлением данных");
     }
 }
-$categories = get_category_list($connect);
+$categories = Category::getList();
 
 $smarty->assign("categories", $categories);
 

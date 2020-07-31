@@ -5,7 +5,7 @@ if (!$id) {
     die ("Ошибка идентификатора");
 }
 
-$deleted = delete_product_by_id($connect, $id);
+$deleted = Product::deleteById( $id);
 
 
 if($deleted){
