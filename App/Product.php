@@ -25,8 +25,12 @@ class Product {
 
     public static function getById($id){
         $query = "SELECT p.*, c.id AS category_id FROM products p LEFT JOIN categories c ON p.category_id = c.id WHERE p.id = $id";
+        $product =  Db::fetchRow($query);
 
-        return Db::fetchRow($query);
+        $product['images'] = ProductImage::getListByProductId($id);
+
+        return $product;
+
     }
 
     public static function updateById(int $id, array $product):int

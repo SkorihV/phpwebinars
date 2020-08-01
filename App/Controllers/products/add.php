@@ -4,11 +4,6 @@ if (Request::isPost()){
     $product = Product::getDataFromPost();
     $productId = Product::add($product);
 
-//    var_dump("<pre>");
-//    var_dump($_POST);
-//    var_dump($_FILES);
-
-
     /*Загрузка файлов в папку товара*/
     $uploadImages = $_FILES['images'] ?? []; // проверяем есть ли файлы в форме
 
@@ -37,10 +32,6 @@ if (Request::isPost()){
         ]);
 
     }
-//
-//    exit;
-
-
 
 
     if($productId){
