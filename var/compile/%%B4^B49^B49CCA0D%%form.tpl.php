@@ -1,8 +1,8 @@
-<?php /* Smarty version 2.6.31, created on 2020-07-31 08:02:17
+<?php /* Smarty version 2.6.31, created on 2020-08-01 08:49:39
          compiled from products/form.tpl */ ?>
 <?php require_once(SMARTY_CORE_DIR . 'core.load_plugins.php');
-smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'products/form.tpl', 42, false),)), $this); ?>
-<form class="form" method="post">
+smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', 'products/form.tpl', 47, false),)), $this); ?>
+<form class="form" method="post" enctype="multipart/form-data">
 
         <input type="hidden" name="id" value="<?php echo $this->_tpl_vars['product']['id']; ?>
 ">
@@ -26,6 +26,11 @@ smarty_core_load_plugins(array('plugins' => array(array('modifier', 'default', '
 </option>
                 <?php endforeach; endif; unset($_from); ?>
             </select>
+        </label>
+    </div>
+    <div class="input-wrap">
+        <label>
+            ФОто товара: <input type="file" multiple name="images[]" class="form-control">
         </label>
     </div>
 

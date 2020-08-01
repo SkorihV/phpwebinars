@@ -29,7 +29,15 @@
 		{foreach from=$products item=product}
 		<tr>
 			<td>{$product.id}</td>
-			<td>{$product.name}</td>
+			<td width="200">
+				{$product.name}
+				{if $product.images}
+					<br>
+					{foreach from=$product.images item=image}
+						<img width="30" src="{$image.path}" alt="{$image.name}">
+					{/foreach}
+				{/if}
+			</td>
 			<td>{$product.category_name}</td>
 			<td>{$product.article}</td>
 			<td>{$product.price}</td>

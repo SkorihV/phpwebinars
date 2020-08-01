@@ -1,4 +1,4 @@
-<form class="form" method="post">
+<form class="form" method="post" enctype="multipart/form-data">
 
         <input type="hidden" name="id" value="{$product.id}">
     <div class="input-wrap">
@@ -16,6 +16,11 @@
                     <option {if $product.category_id == $category.id}selected{/if} value='{$category.id}'>{$category.name}</option>
                 {/foreach}
             </select>
+        </label>
+    </div>
+    <div class="input-wrap">
+        <label>
+            ФОто товара: <input type="file" multiple name="images[]" class="form-control">
         </label>
     </div>
 

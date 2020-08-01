@@ -7,8 +7,14 @@ class Product {
 
     public static function getList($limit = 100, $offset = 0){
         $query = "SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id LIMIT $offset, $limit";
+        $products = Db::fetchAll($query);
 
-        return Db::fetchAll($query);
+        foreach ($products as &$product) {
+            $product['images'] = ProductImage::getListByProductId($product['id']);
+
+        }
+
+        return $products;
     }
 
     public static function getListByCategory($category_id){
@@ -37,6 +43,14 @@ class Product {
         return Db::insert("products", $product);
     }
     public static function deleteById(int $id){
+
+        $path = APP_UPLOAD_PRODUCTS_DIR . '/' . $id;
+       if(file_exists($path)) {
+           deleteDir($path);  // удаляем картинки при удалении товара
+       }
+
+        ProductImage::deleteByProductId($id);
+
        return Db::delete('products', "id = $id");
     }
 

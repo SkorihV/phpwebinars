@@ -54,11 +54,9 @@ class Db
 
    public static function delete(string $tableName, string $where) {
        $query = "DELETE FROM " . $tableName;
-
        if ($where) {
            $query .= " WHERE " . $where;
        }
-
         static::query($query);
 
        return static::affectedRows();

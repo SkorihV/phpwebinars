@@ -1,0 +1,47 @@
+body {
+  max-width: 980px;
+  widtch: 100%;
+  margin: 0 auto;
+}
+.table {
+  border-spacing: 0;
+  border-collapce: collapce;
+}
+.table th {
+  border: 1px solid black;
+  padding:4px;
+}
+.table td {
+  border: 1px solid black;
+  padding:4px;
+}
+
+.form {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 450px;
+  margin: 0 auto;
+}
+.input-wrap {
+  width: 100%;
+}
+
+.input-wrap label {
+  display: flex;
+  flex-direction: column;
+  margin: 5px 0;
+
+}
+
+.input-wrap label input,
+.input-wrap label textarea,
+.form input[type="submit"] {
+  font-size: 15px;
+  border: #9B410E 2px solid;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 0 0 2px 2px #f0c040 inset;
+}

@@ -2,6 +2,16 @@
 /*
 
 
+CREATE TABLE `products_images` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int(10) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL DEFAULT '',
+  `path` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+)
+
+
+
 
  CREATE TABLE `products` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
@@ -90,3 +100,6 @@ SELECT b.id AS book_id, b.name AS book_name, a.id AS author_id, a.name AS author
 
 
 SELECT * FROM `books` WHERE id > 2 ORDER BY id DESC LIMIT 3;
+
+
+ */
