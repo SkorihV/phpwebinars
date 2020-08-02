@@ -8,6 +8,13 @@ class ProductImage {
         return Db::fetchRow($query);
     }
 
+    public static function findByFileNameInProduct(int $productId, string $filename)
+    {
+        $query = "SELECT *  FROM products_images  WHERE product_id = $productId AND name = '$filename'";
+
+        return Db::fetchRow($query);
+    }
+
     public static function updateById(int $id, array $productImage):int
     {
         if (isset($productImage["id"])){

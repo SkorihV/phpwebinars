@@ -20,6 +20,11 @@
     </div>
     <div class="input-wrap">
         <label>
+            Ссылка на изображение: <input type="text"  name="image_url" class="form-control">
+        </label>
+    </div>
+    <div class="input-wrap">
+        <label>
             ФОто товара: <input type="file" multiple name="images[]" class="form-control">
         </label>
     </div>
