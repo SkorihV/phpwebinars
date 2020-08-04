@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2020-08-04 08:21:01
+<?php /* Smarty version 2.6.31, created on 2020-08-04 13:19:38
          compiled from header.tpl */ ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -15,7 +15,7 @@
 <body>
 
 
-<div class="contains site-wrapper">
+<div class="contains site-wrapper" style="max-width: 1400px; margin: 0 auto;">
 	<div class="header">
 		<div class="row">
 			<ul class="nav nav-pills">

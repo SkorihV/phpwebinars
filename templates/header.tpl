@@ -12,7 +12,7 @@
 <body>
 
 
-<div class="contains site-wrapper">
+<div class="contains site-wrapper" style="max-width: 1400px; margin: 0 auto;">
 	<div class="header">
 		<div class="row">
 			<ul class="nav nav-pills">

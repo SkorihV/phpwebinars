@@ -69,7 +69,13 @@ class Db
 
         foreach ($fields as $fieldName => $fieldValue) {
             $fieldNames[] = "`$fieldName`";
-            $fieldValues[] = "'$fieldValue'";
+
+            if ($fieldValue instanceof DbExp){
+                $fieldValues[] = "$fieldValue";
+            } else {
+                $fieldValue = Db::escape($fieldValue);
+                $fieldValues[] = "'$fieldValue'";
+            }
         }
 
         $fieldNames = implode(",", $fieldNames);
@@ -85,23 +91,29 @@ class Db
 
     public static function update(string $tableName, array $fields, string $where): int
     {
+        $setFields = [];
 
-    $setFields = [];
+        foreach ($fields as $fieldName => $fieldValue) {
 
-    foreach ($fields as $fieldName => $fieldValue) {
-        $setFields[] = "`$fieldName` = '$fieldValue'";
-    }
+            if ($fieldValue instanceof DbExp){
+                $setFields[] = "`$fieldName` = $fieldValue";
+            } else {
+                $fieldValue = Db::escape($fieldValue);
+                $setFields[] = "`$fieldName` = '$fieldValue'";
+            }
 
-        $setFields = implode(",", $setFields);
+        }
 
-    $query = "UPDATE $tableName SET $setFields";
+            $setFields = implode(",", $setFields);
 
-   if ($where) {
-       $query .= (" WHERE " . $where);
-   }
-   Db::query($query);
+        $query = "UPDATE $tableName SET $setFields";
 
-   return static::affectedRows();
+       if ($where) {
+           $query .= (" WHERE " . $where);
+       }
+       Db::query($query);
+
+       return static::affectedRows();
 
     }
 
@@ -127,6 +139,10 @@ class Db
     public static function escape(string $value) {
        $connect = static::getConnect();
        return mysqli_escape_string($connect, $value);
+    }
+
+    public static function expr(string $value){
+       return new DbExp($value);
     }
 
     private static function connect() {

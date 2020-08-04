@@ -15,8 +15,20 @@
 //$importFileName = 'i_' . time() . '.' . $file['name'];
 //move_uploaded_file($file['tmp_name'], $uploadDir . '/' . $importFileName);
 
+$fileName = 'i_1596515988.import 1.csv';
+$filePath = APP_PUBLIC_DIR . '/' . 'import' . $fileName;
 
-$filePath = APP_PUBLIC_DIR . '/' . 'import/i_1596515988.import 1.csv';
+$taskName = 'Импорт товаров ' . $fileName;
+$task = 'Import::productFromFileTask';
+$taskParams = [
+    'fileName' => $fileName
+];
+
+$taskId = TasksQueue::addTask($taskName, $task, $taskParams);
+
+Response::redirect('/queue/list');
+
+exit;
 
 $file = fopen($filePath, 'r');
 
