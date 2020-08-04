@@ -124,6 +124,11 @@ class Db
         return mysqli_insert_id($connect);
     }
 
+    public static function escape(string $value) {
+       $connect = static::getConnect();
+       return mysqli_escape_string($connect, $value);
+    }
+
     private static function connect() {
         $connect = mysqli_connect(static::$host, static::$user, static::$password, static::$database);
         if (mysqli_connect_errno()){

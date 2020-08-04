@@ -10,28 +10,16 @@ if (Request::isPost()){
     $imageNames = $uploadImages['name'];  // забираем массив с именами файлов
     $imageTmpNames = $uploadImages['tmp_name']; // масств с временными путями к файлам
 
+    /*Загрузка изображений из УРЛ*/
 
-    $path = APP_UPLOAD_PRODUCTS_DIR . '/' . $productId; // формируем адрес пусти для файлов конкретного товара по его ID
+    $imageURL = $_POST['image_url'] ?? '';
+    ProductImage::uploadImagesByUrl($productId, $imageURL);
 
-    if(!file_exists($path)){
-        mkdir($path);  // создаем папку с id товара если такой нет
-    }
 
-    for ($i = 0; $i < count($imageNames); $i++) {
-        $imageName = basename($imageNames[$i]);  // обрезаем пути до имени файла если они есть
-        $imageTmpName = $imageTmpNames[$i];
+    /*Загрузка файлов в папку товара*/
 
-        $imagePath = $path . "/" . $imageName;
-
-        move_uploaded_file($imageTmpName, $path . '/' . $imageName);  // перебрасываем файлы из временной папки формы в постоянную по id товара
-
-        ProductImage::add([
-            'product_id'=> $productId,
-            'name'=>$imageName,
-            'path'=>str_replace(APP_PUBLIC_DIR, '', $imagePath),
-        ]);
-
-    }
+    $uploadImages = $_FILES['images'] ?? []; // проверяем есть ли файлы в форме
+    ProductImage::uploadImages($productId, $uploadImages);
 
 
     if($productId){

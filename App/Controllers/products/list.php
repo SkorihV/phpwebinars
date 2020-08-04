@@ -1,7 +1,7 @@
 <?php
 
 $current_page = Request::getIntFromGet("p", 1);
-$limit = 5; //товаро нв странице
+$limit = 10; //товаро нв странице
 $products_count = Product::getListCount();
 
 
