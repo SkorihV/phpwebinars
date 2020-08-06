@@ -17,7 +17,7 @@ CREATE TABLE `products_images` (
  CREATE TABLE `products` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
-  `article` int unsigned DEFAULT NULL,
+  `article` varchar(255) NOT NULL DEFAULT '',
   `price` double unsigned DEFAULT NULL,
   `amount` int unsigned DEFAULT NULL,
   `description` MEDIUMTEXT DEFAULT NULL,

@@ -111,6 +111,7 @@ class Db
        if ($where) {
            $query .= (" WHERE " . $where);
        }
+
        Db::query($query);
 
        return static::affectedRows();

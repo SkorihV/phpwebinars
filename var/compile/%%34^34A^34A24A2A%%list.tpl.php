@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2020-08-04 13:20:10
+<?php /* Smarty version 2.6.31, created on 2020-08-06 16:00:49
          compiled from queue/list.tpl */ ?>
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "header.tpl", 'smarty_include_vars' => array('h1' => "Список Категорий")));
@@ -6,13 +6,13 @@ $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
  ?>
 
-<a href='/categories/add'>Добавить</a>
+<a href='/imports/index'>Добавить</a>
 <p>
 <table class="table">
     <thead class="thead-light">
     <tr>
         <th>#</th>
-        <th>Название задачи</th>
+        <th>Название</th>
         <th>Статус задачи</th>
         <th width="1"></th>
     </tr>
@@ -34,7 +34,7 @@ unset($_smarty_tpl_vars);
                     <input type="submit" value="Удал" class="btn btn-danger btn-sm">
                 </form>
                 &nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;
-                <a href='/queue/run=<?php echo $this->_tpl_vars['task']['id']; ?>
+                <a href='/queue/run?id=<?php echo $this->_tpl_vars['task']['id']; ?>
 ' class="btn btn-primary btn-sm">Зап</a>
             </td>
         </tr>
@@ -47,4 +47,4 @@ unset($_smarty_tpl_vars);
 $this->_smarty_include(array('smarty_include_tpl_file' => "bottom.tpl", 'smarty_include_vars' => array()));
 $this->_tpl_vars = $_smarty_tpl_vars;
 unset($_smarty_tpl_vars);
- ?>
+ ?>

@@ -1,6 +1,6 @@
 {include file="header.tpl" h1="Список Категорий"}
 
-<a href='/categories/add'>Добавить</a>
+<a href='/imports/index'>Добавить</a>
 <p>
 <table class="table">
     <thead class="thead-light">
@@ -22,7 +22,7 @@
                     <input type="submit" value="Удал" class="btn btn-danger btn-sm">
                 </form>
                 &nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;
-                <a href='/queue/run={$task.id}' class="btn btn-primary btn-sm">Зап</a>
+                <a href='/queue/run?id={$task.id}' class="btn btn-primary btn-sm">Зап</a>
             </td>
         </tr>
     {/foreach}

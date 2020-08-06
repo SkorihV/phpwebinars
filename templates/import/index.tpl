@@ -1,7 +1,7 @@
 {include file="header.tpl" h1="Загрузка файла импорта"}
 
 <p>
-    <form class="form" method="post" enctype="multipart/form-data" action="/import/upload">
+    <form class="form" method="post" enctype="multipart/form-data" action="/imports/upload">
         <div class="input-wrap">
             <label>
                 Файл импорта(csv): <input type="file" multiple name="import_file" class="form-control">
