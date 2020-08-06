@@ -1,14 +1,14 @@
 <?php
 require_once __DIR__ . "/../libs/Smarty/Smarty.class.php";
-require_once __DIR__ . "/../App/Product.php";
-require_once __DIR__ . "/../App/Category.php";
-require_once __DIR__ . "/../App/Db.php";
-require_once __DIR__ . "/../App/DbExp.php";
-require_once __DIR__ . "/../App/Request.php";
-require_once __DIR__ . "/../App/Response.php";
-require_once __DIR__ . "/../App/ProductImage.php";
-require_once __DIR__ . "/../App/Import.php";
-require_once __DIR__ . "/../App/TasksQueue.php";
+spl_autoload_register(function($name){
+
+    $name = str_replace('\\', '/', $name);
+    $filepath = __DIR__ . '/../' . $name . '.php';
+
+    if(file_exists($filepath)) {
+        require_once $filepath;
+    }
+});
 
 define('APP_DIR', realpath(__DIR__ . '/../'));
 define('APP_PUBLIC_DIR', APP_DIR . '/public');
@@ -41,21 +41,6 @@ function deleteDir($dir) {
         (is_dir("$dir/$file")) ? deleteDir("$dir/$file") : unlink("$dir/$file");
     }
     return rmdir($dir);
-
-//    $dir = opendir($src);
-//    while(false !== ( $file = readdir($dir)) ) {
-//        if (( $file != '.' ) && ( $file != '..' )) {
-//            $full = $src . '/' . $file;
-//            if ( is_dir($full) ) {
-//                rrmdir($full);
-//            }
-//            else {
-//                unlink($full);
-//            }
-//        }
-//    }
-//    closedir($dir);
-//    rmdir($src);
 
 }
 

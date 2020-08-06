@@ -1,4 +1,6 @@
 <?php
+use App\Category;
+
 require_once 'config.php';
 
 $requestUri = $_SERVER['REQUEST_URI'];

@@ -1,4 +1,8 @@
 <?php
+use App\Product;
+use App\Request;
+use App\Response;
+
 $id = Request::getIntFromPost("id", false);
 if (!$id) {
     die ("Ошибка идентификатора");

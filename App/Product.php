@@ -1,4 +1,9 @@
 <?php
+
+namespace App;
+
+use App\Db\Db;
+
 class Product {
     public static function getListCount() {
         $query = "SELECT COUNT(1) as c FROM products p LEFT JOIN categories c ON p.category_id = c.id";
