@@ -1,0 +1,16 @@
+{
+    "name": "vitaliy.skoryh/phpwebinars",
+    "authors": [
+        {
+            "name": "skorihv",
+            "email": "skorihv@mail.ru"
+        }
+    ],
+    "require": {
+        "php": ">=7.3",
+        "smarty/smarty": "2.6.*"
+    },
+    "autoload": {
+        "psr-4": {"App\\": "App/"}
+    }
+}

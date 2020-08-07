@@ -37,6 +37,7 @@ class Import
             $headers = fgetcsv($file);
         }
 
+
         while ($row = fgetcsv($file)) {
             $productData = [];
 
@@ -52,6 +53,7 @@ class Import
                 'description' => Db::escape($productData['description']),
             ];
 
+            
             $categoryName = $productData['category_name'];
 
 

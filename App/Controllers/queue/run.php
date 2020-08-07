@@ -1,7 +1,10 @@
 <?php
 
-$id = Request::getIntFromGet('id');
+use App\Request;
+use App\TasksQueue;
+use App\Response;
 
+$id = Request::getIntFromGet('id');
 
 
 TasksQueue::runById($id);

@@ -23,7 +23,7 @@ $filePath = APP_PUBLIC_DIR . '/' . 'import/' . $importFileName;
 
 
 $taskName = 'Импорт товаров ' . $importFileName;
-$task = 'Import::productFromFileTask';
+$task = \App\Import::class . '::productFromFileTask';
 $taskParams = [
     'fileName' => $importFileName
 ];

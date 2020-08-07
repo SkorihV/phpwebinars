@@ -16,7 +16,6 @@ class Db
        if (is_null(static::$connect)){
            static::$connect = static::connect();
        }
-
        return static::$connect;
    }
 

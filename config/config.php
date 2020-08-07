@@ -1,14 +1,6 @@
 <?php
-require_once __DIR__ . "/../libs/Smarty/Smarty.class.php";
-spl_autoload_register(function($name){
+require_once __DIR__ . "/../vendor/autoload.php";
 
-    $name = str_replace('\\', '/', $name);
-    $filepath = __DIR__ . '/../' . $name . '.php';
-
-    if(file_exists($filepath)) {
-        require_once $filepath;
-    }
-});
 
 define('APP_DIR', realpath(__DIR__ . '/../'));
 define('APP_PUBLIC_DIR', APP_DIR . '/public');

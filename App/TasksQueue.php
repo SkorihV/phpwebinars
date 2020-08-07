@@ -30,6 +30,7 @@ class TasksQueue
 
     public static function getById(int $taskId){
         $query = "SELECT * FROM tasks_queue WHERE id = $taskId";
+
         return Db::fetchRow($query);
     }
 
@@ -72,6 +73,7 @@ class TasksQueue
 
         $taskId = $task['id'] ?? null;
 
+
         if (empty($task) || is_null($taskId)){
             return false;
         }
@@ -86,6 +88,7 @@ class TasksQueue
             static::setStatus($taskId, 'error');
             return false;
         }
+
 
         static::setStatus($taskId, 'in_process');
         $taskParams = json_decode($task['params'], true);
