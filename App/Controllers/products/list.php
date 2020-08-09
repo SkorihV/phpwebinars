@@ -9,8 +9,13 @@ $products_count = Product::getListCount();
 
 
 $offset = ($current_page - 1) * $limit; // смещение товаров у пагинации
-$products = Product::getList( $limit, $offset);
 $pages_count = ceil($products_count / $limit); //количество страниц
+
+
+$productRepository = new Product\ProductRepository();
+$products = $productRepository->getList($limit, $offset);
+
+//$products = Product::getList( $limit, $offset);
 
 
 $smarty->assign('page_count', $pages_count);

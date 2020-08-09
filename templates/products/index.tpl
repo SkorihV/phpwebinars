@@ -28,25 +28,26 @@
 	<tbody>
 		{foreach from=$products item=product}
 		<tr>
-			<td>{$product.id}</td>
+			<td>{$product->getId()}</td>
 			<td width="200">
-				{$product.name}
-				{if $product.images}
+				{$product->getName()}
+				{*if $product.images}
 					<br>
 					{foreach from=$product.images item=image}
 						<img width="30" src="{$image.path}" alt="{$image.name}">
 					{/foreach}
-				{/if}
+				{/if*}
 			</td>
-			<td>{$product.category_name}</td>
-			<td>{$product.article}</td>
-			<td>{$product.price}</td>
-			<td>{$product.amount}</td>
-			<td>{$product.description}</td>
+			{assign var=productCategory value=$product->getCategory() }
+			<td>{$productCategory->getName()}</td>
+			<td>{$product->getArticle()}</td>
+			<td>{$product->getPrice()}</td>
+			<td>{$product->getAmount()}</td>
+			<td>{$product->getDescription()}</td>
 			<td>
-				<form action="/products/delete" method="post" style="display: inline"><input type="hidden" name="id" value="{$product.id}"><input type="submit" value="Удал"></form>
+				<form action="/products/delete" method="post" style="display: inline"><input type="hidden" name="id" value="{$product->getId()}"><input type="submit" value="Удал"></form>
 				&nbsp;&nbsp;&nbsp;||&nbsp;&nbsp;&nbsp;
-				<a href='/products/edit?id={$product.id}'>Ред</a>
+				<a href="/products/edit?id={$product->getId()}">Ред</a>
 			</td>
 		</tr>
 		{/foreach}
