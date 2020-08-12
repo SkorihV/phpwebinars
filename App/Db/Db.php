@@ -5,9 +5,9 @@ namespace App\Db;
 class Db
 {
    private static $host = '127.0.0.1';
-   private static $user = 'root';
+   private static $user = 'skorihv';
    private static $password = '';
-   private static $database = 'phpwebinars';
+   private static $database = 'phpwebinares';
 
    private static $connect;
 
