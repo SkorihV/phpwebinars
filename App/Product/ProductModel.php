@@ -4,7 +4,7 @@ namespace App\Product;
 
 use App\Category\Category;
 
-class Product
+class ProductModel
 {
     /**
      * @var int
@@ -42,7 +42,7 @@ class Product
     protected $category;
 
     /**
-     * @var array
+     * @var PraductImage[]
      */
     protected $images;
 
@@ -160,7 +160,7 @@ class Product
 
     /**
      * @param Category $category
-     * @return Product
+     * @return ProductModel
      */
     public function setCategory(Category $category)
     {
@@ -170,7 +170,7 @@ class Product
     }
 
     /**
-     * @return array
+     * @return ProductImageModel[]
      */
     public function getImages(): array
     {
@@ -178,11 +178,18 @@ class Product
     }
 
     /**
-     * @param array $images
+     * @param ProductImageModel[] $images
+     * $return product
      */
     public function setImages(array $images)
     {
         $this->images = $images;
+    }
+
+    public function addImage(ProductImageModel $productImage): ProductModel
+    {
+        $this->images[] = $productImage;
+        return $this;
     }
 
 }

@@ -7,18 +7,26 @@ use App\Response;
 
 if (Request::isPost()){
 
-    $product = Product::getDataFromPost();
-    $productId = Product::add($product);
+    $productData = Product::getDataFromPost();
+
+    $productRepository = new Product\ProductRepository($productData);
+    $product = $productRepository->getProductFromArray($productData);
+
+    $product = $productRepository->save($product);
+
+
+    $productId = $product->getId();
+
 
     /*Загрузка файлов в папку товара*/
-    $uploadImages = $_FILES['images'] ?? []; // проверяем есть ли файлы в форме
 
-    $imageNames = $uploadImages['name'];  // забираем массив с именами файлов
-    $imageTmpNames = $uploadImages['tmp_name']; // масств с временными путями к файлам
+
+//    $imageNames = $uploadImages['name'];  // забираем массив с именами файлов
+//    $imageTmpNames = $uploadImages['tmp_name']; // масств с временными путями к файлам
 
     /*Загрузка изображений из УРЛ*/
 
-    $imageURL = $_POST['image_url'] ?? '';
+    $imageURL = trim($_POST['image_url'] ?? '');
     ProductImage::uploadImagesByUrl($productId, $imageURL);
 
 
