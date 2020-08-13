@@ -11,14 +11,20 @@ $productId = Request::getIntFromGet("id", false);
 
 $product = [];
 
+$productRepository = new Product\ProductRepository();
+
 if ($productId) {
-    $product = Product::getById($productId);
+    $product = $productRepository->getById($productId);
 }
 
 
 
+var_dump($_POST);
+
 if (Request::isPost()){
     $productData = Product::getDataFromPost();
+
+
     $edited = Product::updateById( $productId, $productData);
 
     /*Загрузка изображений из УРЛ*/
@@ -36,6 +42,9 @@ if (Request::isPost()){
 
         Response::redirect('/products/list');
 }
+
+
+
 $categories = Category::getList();
 
 $smarty->assign("categories", $categories);

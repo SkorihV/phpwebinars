@@ -10,6 +10,96 @@ use App\ProductImage as ProductImageService;
 
 class ProductRepository
 {
+
+
+    public function getById(int $id)
+    {
+        $query = "SELECT p.*, c.name AS category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id WHERE p.id = $id";
+        $productArray =  Db::fetchRow($query);
+        $product = $this->getProductFromArray($productArray);
+
+        $imagesData = ProductImageService::getListByProductId($product->getId());
+
+
+        foreach ($imagesData as $imageItem) {
+            $productImage = $this->getProductImageFromArray($imageItem);
+            $product->addImage($productImage);
+        }
+        return $product;
+
+    }
+
+    /**
+     * @param int $limit
+     * @param int $offset
+     * @return ProductModel[]
+     */
+    public function getList(int $limit = 50, $offset = 0): array
+    {
+        $query = "SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id LIMIT $offset, $limit";
+        $result = Db::query($query);
+
+        $products = [];
+
+
+        while  ($productArray = Db::fetchAssoc($result) ){
+          $product = $this->getProductFromArray($productArray);
+
+            $imagesData = ProductImageService::getListByProductId($product->getId());
+
+            foreach ($imagesData as $imageItem) {
+                $productImage = $this->getProductImageFromArray($imageItem);
+                $product->addImage($productImage);
+
+
+            }
+
+            $products[] = $product;
+        }
+        return $products;
+
+    }
+    
+    public function save(ProductModel $product): ProductModel
+    {
+
+        $id = $product->getId();
+        $productArray = $this->productToArray($product);
+
+
+        if($id){
+         Db::update("products", $productArray, "id = $id");
+            return $product;
+        }
+
+        $id = Db::insert("products", $productArray);
+
+
+        $product->setId($id);
+        return $product;
+    }
+
+    public function productToArray(ProductModel $product)
+    {
+
+        $data = [
+            'name' => $product->getName(),
+            'article' => $product->getArticle(),
+            'amount' => $product->getAmount(),
+            'price' => $product->getPrice(),
+            "description" => $product->getDescription(),
+            "category_id" => $product->getCategory()->getId()
+        ];
+
+        $category = $product->getCategory();
+
+        if(!is_null($category)){
+            $data['category_id'] = $category->getId();
+        }
+
+        return $data;
+    }
+
     /**
      * @param array $data
      * @return ProductModel
@@ -50,7 +140,7 @@ class ProductRepository
             }
             $category = new Category($categoryName);
             $category->setId($categoryId);
-            
+
             $product->setCategory($category);
         }
 
@@ -62,84 +152,21 @@ class ProductRepository
         return $product;
     }
 
+    /**
+     * @param array $data
+     * @return ProductImageModel
+     */
     public function getProductImageFromArray(array $data): ProductImageModel
     {
         $productImage = new ProductImageModel();
 
 
         $productImage
-                ->setId($data['id'])
-                ->setName($data['name'])
-                ->setPath($data['path'])
-                ->setSize($data['size']);
+            ->setId($data['id'])
+            ->setName($data['name'])
+            ->setPath($data['path'])
+            ->setSize($data['size']);
 
         return $productImage;
-    }
-
-    /**
-     * @param int $limit
-     * @param int $offset
-     * @return ProductModel[]
-     */
-    public function getList(int $limit = 50, $offset = 0): array
-    {
-        $query = "SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id LIMIT $offset, $limit";
-        $result = Db::query($query);
-
-        $products = [];
-
-
-        while  ($productArray = Db::fetchAssoc($result) ){
-          $product = $this->getProductFromArray($productArray);
-
-            $imagesData = ProductImageService::getListByProductId($product->getId());
-
-            foreach ($imagesData as $imageItem) {
-                $productImage = $this->getProductImageFromArray($imageItem);
-                $product->addImage($productImage);
-
-
-            }
-
-            $products[] = $product;
-        }
-        return $products;
-
-    }
-    
-    public function save(ProductImageModel $product): ProductModel
-    {
-        $id = $product->getId();
-        $productArray = $this->productToArray($product);
-
-        if($id){
-         Db::update("products", $productArray, "id = $id");
-            return $product;
-        }
-
-        $id = Db::insert("products", $product);
-        $product->setId($id);
-        return $product;
-    }
-
-    public function productToArray(ProductModel $product)
-    {
-
-        $data = [
-            'name' => $product->getName(),
-            'article' => $product->getArticle(),
-            'amount' => $product->getAmount(),
-            'price' => $product->getPrice(),
-            "description" => $product->getDescription(),
-            "category_id" => $product->getCategory()->getId()
-        ];
-
-        $category = $product->getCategory();
-
-        if(!is_null($category)){
-            $data['category_id'] = $category->getId();
-        }
-
-        return $data;
     }
 }

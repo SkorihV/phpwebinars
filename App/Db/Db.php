@@ -7,7 +7,7 @@ class Db
    private static $host = '127.0.0.1';
    private static $user = 'skorihv';
    private static $password = '';
-   private static $database = 'phpwebinares';
+   private static $database = 'phpwebinars';
 
    private static $connect;
 

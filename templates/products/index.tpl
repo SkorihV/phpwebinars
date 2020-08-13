@@ -6,7 +6,7 @@
 	<nav>
 		<ul class="pagination">
 			{section loop=$page_count name=pagination}
-			<li class="page-item {if $smarty.get.p == $smarty.section.pagination.iteration}active{/if}"><a class="page-link" href="{$smarty.server.PATH_INFO}?p={$smarty.section.pagination.iteration}">{$smarty.section.pagination.iteration}</a></li>
+				<li class="page-item {if $smarty.get.p == $smarty.section.pagination.iteration}active{/if}"><a class="page-link" href="{$smarty.server.PATH_INFO}?p={$smarty.section.pagination.iteration}">{$smarty.section.pagination.iteration}</a></li>
 			{/section}
 		</ul>
 	</nav>
@@ -14,19 +14,19 @@
 
 <table class="table">
 	<thead>
-		<tr>
-			<th>#</th>
-			<th>Название товара</th>
-			<th>Категория</th>
-			<th>Артикул</th>
-			<th>Цена</th>
-			<th>Количество на складе</th>
-			<th>Описание</th>
-			<th></th>
-		</tr>
+	<tr>
+		<th>#</th>
+		<th>Название товара</th>
+		<th>Категория</th>
+		<th>Артикул</th>
+		<th>Цена</th>
+		<th>Количество на складе</th>
+		<th>Описание</th>
+		<th></th>
+	</tr>
 	</thead>
 	<tbody>
-		{foreach from=$products item=product}
+	{foreach from=$products item=product}
 		<tr>
 			<td>{$product->getId()}</td>
 			<td width="200">
@@ -50,7 +50,7 @@
 				<a href="/products/edit?id={$product->getId()}">Ред</a>
 			</td>
 		</tr>
-		{/foreach}
+	{/foreach}
 	</tbody>
 </table>
 </p>

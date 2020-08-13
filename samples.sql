@@ -7,9 +7,9 @@ CREATE TABLE `products_images` (
   `product_id` int(10) unsigned NOT NULL,
   `name` varchar(255) NOT NULL DEFAULT '',
   `path` varchar(255) DEFAULT NULL,
-  `size` int(1) unsigned NOT NULL DEFAULT 0
+  `size` int(1) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-)
+);
 
 
 
@@ -23,14 +23,18 @@ CREATE TABLE `products_images` (
   `description` MEDIUMTEXT DEFAULT NULL,
   `category_id` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8
+) ;
+
+ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=utf8
 
 
  CREATE TABLE `categories` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8
+) ;
+
+ENGINE=InnoDB DEFAULT CHARSET=utf8
 
 
  CREATE TABLE `tasks_queue` (
@@ -38,7 +42,7 @@ CREATE TABLE `products_images` (
   `name` varchar(255) NOT NULL DEFAULT '',
   `task` varchar(255) NOT NULL DEFAULT '',
   `params` varchar(255) NOT NULL,
-  `status` ENUM('new', 'in_progress', 'done') DEFAULT 'new',
+  `status` ENUM('new', 'in_process', 'done', 'error') DEFAULT 'new',
   `create_at` DATETIME NOT NULL,
   `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (id)

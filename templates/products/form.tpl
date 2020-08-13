@@ -1,9 +1,9 @@
 <form class="form" method="post" enctype="multipart/form-data">
 
-        <input type="hidden" name="id" value="{$product.id}">
+        <input type="hidden" name="id" value="{$product->getId()}">
     <div class="input-wrap">
         <label>
-          Название товара: <input type="text" name="name" required value="{$product.name}">
+          Название товара: <input type="text" name="name" required value="{$product->getName()}">
         </label>
     </div>
 
@@ -11,9 +11,10 @@
         <label>
             Категории
             <select name="category_id" >
-                <option></option>
+                <option value="0">Не выборано</option>
+                {assign var=productCategory value=$product->getCategory()}
                 {foreach from=$categories item=category}
-                    <option {if $product.category_id == $category.id}selected{/if} value='{$category.id}'>{$category.name}</option>
+                    <option {if $productCategory->getId() == $category.id}selected{/if} value='{$category.id}'>{$category.name}</option>
                 {/foreach}
             </select>
         </label>
@@ -28,14 +29,14 @@
             ФОто товара: <input type="file" multiple name="images[]" class="form-control">
         </label>
     </div>
-    {if $product.images}
+    {if $product->getImages()}
         <div class="form-group d-flex">
-            {foreach from=$product.images item=image}
+            {foreach from=$product->getImages() item=image}
                 <div class="card" style="width: 90px;">
                     <div class="card-body">
-                        <button type="submit" class="btn btn-danger btn-sm" data-image-id="{$image.id}" onclick="return deleteImage(this)">Удалить</button>
+                        <button type="submit" class="btn btn-danger btn-sm" data-image-id="{$image->getId()}" onclick="return deleteImage(this)">Удалить</button>
                     </div>
-                    <img src="{$image.path}" class="card-img-top" alt="{$image.name}" style="max-height: 120px; object-fit: contain;">
+                    <img src="{$image->getPath()}" class="card-img-top" alt="{$image->getName()}" style="max-height: 120px; object-fit: contain;">
                 </div>
             {/foreach}
         </div>
@@ -49,7 +50,7 @@
                     alert("Проблема с image_id");
                 }
 
-                let url = '/products/delete_image'
+                let url = '/products/delete_image';
 
                 const formData = new FormData();
                 formData.append('product_image_id', imageId);
@@ -58,16 +59,16 @@
                     method: 'POST',
                     body: formData
                 })
-                    .then((response)=> {
-                        response.text()
-                            .then((text) => {
-                                if(text.indexOf('error') > -1) {
-                                    alert("ошибка при удалении");
-                                } else {
-                                    document.location.reload();
-                                }
-                            })
-                    });
+                .then((response) => {
+                    response.text()
+                    .then((text) => {
+                        if(text.indexOf('error') > -1) {
+                            alert("ошибка при удалении");
+                        } else {
+                            document.location.reload();
+                        }
+                    })
+                })
                 return false;
             }
         </script>
@@ -75,22 +76,22 @@
     {/if}
     <div class="input-wrap">
      <label>
-        Артикул товара: <input type="text" name="article" value="{$product.article}" >
+        Артикул товара: <input type="text" name="article" value="{$product->getArticle()}" >
         </label>
     </div>
     <div class="input-wrap">
          <label>
-        Цена: <input type="number" name="price" value="{$product.price}">
+        Цена: <input type="number" name="price" value="{$product->getPrice()}">
         </label>
     </div>
     <div class="input-wrap">
         <label>
-        Количество на складе: <input type="number" name="amount" value="{$product.amount}">
+        Количество на складе: <input type="number" name="amount" value="{$product->getAmount()}">
         </label>
     </div>
     <div class="input-wrap">
         <label>
-        Описание: <textarea style="resize: auto;" name="description">{$product.description}</textarea>
+        Описание: <textarea style="resize: auto;" name="description">{$product->getDescription()}</textarea>
         </label>
     </div>
         <input type="submit" value="{$submit_name|default:'Сохранить'}">

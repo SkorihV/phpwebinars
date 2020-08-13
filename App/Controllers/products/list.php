@@ -15,6 +15,8 @@ $pages_count = ceil($products_count / $limit); //количество стран
 $productRepository = new Product\ProductRepository();
 $products = $productRepository->getList($limit, $offset);
 
+
+
 //$products = Product::getList( $limit, $offset);
 
 

@@ -12,6 +12,7 @@ if (Request::isPost()){
     $productRepository = new Product\ProductRepository($productData);
     $product = $productRepository->getProductFromArray($productData);
 
+
     $product = $productRepository->save($product);
 
 
@@ -26,6 +27,7 @@ if (Request::isPost()){
 
     /*Загрузка изображений из УРЛ*/
 
+    
     $imageURL = trim($_POST['image_url'] ?? '');
     ProductImage::uploadImagesByUrl($productId, $imageURL);
 
@@ -34,7 +36,6 @@ if (Request::isPost()){
 
     $uploadImages = $_FILES['images'] ?? []; // проверяем есть ли файлы в форме
     ProductImage::uploadImages($productId, $uploadImages);
-
 
     if($productId){
         Response::redirect('/products/list');

@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2020-08-12 15:13:06
+<?php /* Smarty version 2.6.31, created on 2020-08-13 15:31:12
          compiled from products/index.tpl */ ?>
 <?php $_smarty_tpl_vars = $this->_tpl_vars;
 $this->_smarty_include(array('smarty_include_tpl_file' => "header.tpl", 'smarty_include_vars' => array('h1' => "Список товаров")));
@@ -35,7 +35,7 @@ $this->_sections['pagination']['index_next'] = $this->_sections['pagination']['i
 $this->_sections['pagination']['first']      = ($this->_sections['pagination']['iteration'] == 1);
 $this->_sections['pagination']['last']       = ($this->_sections['pagination']['iteration'] == $this->_sections['pagination']['total']);
 ?>
-			<li class="page-item <?php if ($_GET['p'] == $this->_sections['pagination']['iteration']): ?>active<?php endif; ?>"><a class="page-link" href="<?php echo $_SERVER['PATH_INFO']; ?>
+				<li class="page-item <?php if ($_GET['p'] == $this->_sections['pagination']['iteration']): ?>active<?php endif; ?>"><a class="page-link" href="<?php echo $_SERVER['PATH_INFO']; ?>
 ?p=<?php echo $this->_sections['pagination']['iteration']; ?>
 "><?php echo $this->_sections['pagination']['iteration']; ?>
 </a></li>
@@ -46,19 +46,19 @@ $this->_sections['pagination']['last']       = ($this->_sections['pagination']['
 
 <table class="table">
 	<thead>
-		<tr>
-			<th>#</th>
-			<th>Название товара</th>
-			<th>Категория</th>
-			<th>Артикул</th>
-			<th>Цена</th>
-			<th>Количество на складе</th>
-			<th>Описание</th>
-			<th></th>
-		</tr>
+	<tr>
+		<th>#</th>
+		<th>Название товара</th>
+		<th>Категория</th>
+		<th>Артикул</th>
+		<th>Цена</th>
+		<th>Количество на складе</th>
+		<th>Описание</th>
+		<th></th>
+	</tr>
 	</thead>
 	<tbody>
-		<?php $_from = $this->_tpl_vars['products']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
+	<?php $_from = $this->_tpl_vars['products']; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array'); }if (count($_from)):
     foreach ($_from as $this->_tpl_vars['product']):
 ?>
 		<tr>
@@ -97,7 +97,7 @@ $this->_sections['pagination']['last']       = ($this->_sections['pagination']['
 ">Ред</a>
 			</td>
 		</tr>
-		<?php endforeach; endif; unset($_from); ?>
+	<?php endforeach; endif; unset($_from); ?>
 	</tbody>
 </table>
 </p>
