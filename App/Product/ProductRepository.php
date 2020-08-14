@@ -4,14 +4,18 @@
 namespace App\Product;
 
 
-use App\Category\Category;
+use App\Category\CategoryModel;
 use App\Db\Db;
 use App\ProductImage as ProductImageService;
 
 class ProductRepository
 {
 
-
+    /**
+     * @param int $id
+     * @return ProductModel
+     * @throws \Exception
+     */
     public function getById(int $id)
     {
         $query = "SELECT p.*, c.name AS category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id WHERE p.id = $id";
@@ -138,7 +142,7 @@ class ProductRepository
                 $categoryName = $categoryData['name'];
 
             }
-            $category = new Category($categoryName);
+            $category = new CategoryModel($categoryName);
             $category->setId($categoryId);
 
             $product->setCategory($category);

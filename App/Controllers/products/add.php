@@ -5,6 +5,7 @@ use App\ProductImage;
 use App\Request;
 use App\Response;
 
+
 if (Request::isPost()){
 
     $productData = Product::getDataFromPost();
@@ -12,22 +13,16 @@ if (Request::isPost()){
     $productRepository = new Product\ProductRepository($productData);
     $product = $productRepository->getProductFromArray($productData);
 
-
     $product = $productRepository->save($product);
 
 
     $productId = $product->getId();
 
 
-    /*Загрузка файлов в папку товара*/
-
-
-//    $imageNames = $uploadImages['name'];  // забираем массив с именами файлов
-//    $imageTmpNames = $uploadImages['tmp_name']; // масств с временными путями к файлам
 
     /*Загрузка изображений из УРЛ*/
 
-    
+
     $imageURL = trim($_POST['image_url'] ?? '');
     ProductImage::uploadImagesByUrl($productId, $imageURL);
 
@@ -45,7 +40,13 @@ if (Request::isPost()){
 
 }
 
+
+$product = new Product\ProductModel("", 0, 0);
+$product->setCategory(new Category\CategoryModel(''));
+
 $categories = Category::getList();
 
 $smarty->assign("categories", $categories);
+
+$smarty->assign("product", $product);
 $smarty->display('products/add.tpl');

@@ -2,12 +2,12 @@
 
 namespace App\Category;
 
-class Category
+class CategoryModel
 {
     /**
      * @var int
      */
-    protected $id;
+    protected $id = 0;
 
     /**
      * @var string

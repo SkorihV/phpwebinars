@@ -8,7 +8,6 @@ use App\Response;
 $productId = Request::getIntFromGet("id", false);
 
 
-
 $product = [];
 
 $productRepository = new Product\ProductRepository();
@@ -18,11 +17,28 @@ if ($productId) {
 }
 
 
-
-var_dump($_POST);
-
 if (Request::isPost()){
     $productData = Product::getDataFromPost();
+
+    $product->setName($productData['name']);
+    $product->setArticle($productData['article']);
+    $product->setDescription($productData['description']);
+    $product->setAmount($productData['amount']);
+    $product->setPrice($productData['price']);
+
+
+    $categoryId = $productData['category_id'] ?? 0;
+
+    if ($categoryId) {
+        $categoryData = \App\Category::getById($categoryId);
+        $categoryName = $categoryData['name'];
+        $category = new \App\Category\CategoryModel($categoryName);
+        $category->setId($categoryId);
+
+        $product->setCategory($category);
+    }
+
+    $product = $productRepository->save($product);
 
 
     $edited = Product::updateById( $productId, $productData);
@@ -42,8 +58,6 @@ if (Request::isPost()){
 
         Response::redirect('/products/list');
 }
-
-
 
 $categories = Category::getList();
 

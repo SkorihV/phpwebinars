@@ -1,5 +1,6 @@
 <form class="form" method="post" enctype="multipart/form-data">
 
+
         <input type="hidden" name="id" value="{$product->getId()}">
     <div class="input-wrap">
         <label>

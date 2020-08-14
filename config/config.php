@@ -17,14 +17,6 @@ if(!file_exists(APP_UPLOAD_PRODUCTS_DIR)){
 
 
 
-$smarty = new Smarty();
-
-$smarty->template_dir = __DIR__ . '/../templates';
-$smarty->compile_dir = __DIR__ . '/../var/compile';
-$smarty->config_dir = __DIR__ . '/../var/configs';
-$smarty->cache_dir = __DIR__ . '/../var/cache';
-
-
 function deleteDir($dir) {
     $files = array_diff(scandir($dir), array('.','..')); // получаем список вложенных файлов и папок
 

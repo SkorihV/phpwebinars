@@ -2,49 +2,49 @@
 
 namespace App\Product;
 
-use App\Category\Category;
+use App\Category\CategoryModel;
 
 class ProductModel
 {
     /**
      * @var int
      */
-    protected $id;
+    protected $id = 0;
 
     /**
      * @var string
      */
-    protected $name;
+    protected $name = '';
 
     /**
      * @var string
      */
-    protected $article;
+    protected $article = '';
 
     /**
      * @var float
      */
-    protected $price;
+    protected $price = 0;
 
     /**
      * @var int
      */
-    protected $amount;
+    protected $amount = 0;
 
     /**
      * @var string
      */
-    protected $description;
+    protected $description = '';
 
     /**
-     * @var Category
+     * @var CategoryModel
      */
-    protected $category;
+    protected $category = 0;
 
     /**
      * @var PraductImage[]
      */
-    protected $images;
+    protected $images = [];
 
 
     public function __construct(string $name, float $price, int $amount)
@@ -151,20 +151,19 @@ class ProductModel
     }
 
     /**
-     * @return Category|null
+     * @return CategoryModel|null
      */
-    public function getCategory(): Category
+    public function getCategory(): CategoryModel
     {
         return $this->category;
     }
 
     /**
-     * @param Category $category
+     * @param CategoryModel $category
      * @return ProductModel
      */
-    public function setCategory(Category $category)
+    public function setCategory(CategoryModel $category)
     {
-
         $this->category = $category;
         return $this;
     }

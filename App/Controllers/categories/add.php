@@ -15,4 +15,5 @@ if (Request::isPost()){
 
 }
 
+
 $smarty->display('categories/add.tpl');
