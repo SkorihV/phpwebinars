@@ -1,7 +1,10 @@
 <?php
 namespace App\Router;
 
+use App\Category\CategoryController;
 use App\Product\ProductController;
+use App\Queue\QueueController;
+use App\Import\ImportController;
 use App\Renderer;
 
 /**
@@ -16,6 +19,25 @@ class Dispatcher
         '/products/list' => [ ProductController::class, 'list'],
         '/products/edit' => [ ProductController::class, 'edit'],
         '/products/add' => [ ProductController::class, 'add'],
+        '/products/delete' => [ ProductController::class, 'delete'],
+        '/products/delete_image' => [ ProductController::class, 'deleteImage'],
+
+        '/categories/list' => [ CategoryController::class, 'list'],
+        '/categories/edit' => [ CategoryController::class, 'edit'],
+        '/categories/add' => [ CategoryController::class, 'add'],
+        '/categories/delete' => [ CategoryController::class, 'delete'],
+        '/categories/view' => [ CategoryController::class, 'view'],
+
+        '/categories/view/{id}' => [ CategoryController::class, 'view'],
+
+        '/queue/run' => [ QueueController::class, 'run'],
+        '/queue/list' => [ QueueController::class, 'list'],
+
+        '/imports/index' => [ ImportController::class, 'index'],
+        '/imports/upload' => [ ImportController::class, 'upload'],
+
+
+
     ];
 
     public function dispatch()
@@ -28,6 +50,7 @@ class Dispatcher
 
         $route = null;
 
+        var_dump($url);
         foreach ($this->routes as $path => $controller) {
             if ($url == $path) {
                 $route = $controller;
