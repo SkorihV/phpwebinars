@@ -16,6 +16,7 @@ use App\TasksQueue;
 
 class importController
 {
+    
     public function index(){
 
         Renderer::getSmarty()->display("import/index.tpl");

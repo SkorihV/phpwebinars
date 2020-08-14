@@ -16,6 +16,7 @@ use App\TasksQueue;
 
 class QueueController
 {
+    
     public function list(){
         $tasks = TasksQueue::getTaskList();
 

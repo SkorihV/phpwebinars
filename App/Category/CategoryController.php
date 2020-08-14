@@ -17,6 +17,15 @@ use App\Response;
 
 class CategoryController
 {
+    /**
+     * @var array
+     */
+    private $params;
+
+    public function __construct(array $params)
+    {
+        $this->params = $params;
+    }
 
     public function add(){
         if (Request::isPost()){
@@ -86,7 +95,12 @@ class CategoryController
 
     }
     public function view(){
-        $category_id = Request::getIntFromGet("id");
+        $category_id = Request::getIntFromGet("id", null);
+        if (is_null($category_id)) {
+            $category_id = $this->params['id'] ?? null;
+        }
+
+
         $category = Category::getById($category_id);
 
 

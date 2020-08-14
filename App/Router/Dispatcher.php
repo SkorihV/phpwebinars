@@ -18,6 +18,7 @@ class Dispatcher
     protected $routes = [
         '/products/list' => [ ProductController::class, 'list'],
         '/products/edit' => [ ProductController::class, 'edit'],
+        '/products/edit/{id}' => [ ProductController::class, 'edit'],
         '/products/add' => [ ProductController::class, 'add'],
         '/products/delete' => [ ProductController::class, 'delete'],
         '/products/delete_image' => [ ProductController::class, 'deleteImage'],
@@ -29,6 +30,7 @@ class Dispatcher
         '/categories/view' => [ CategoryController::class, 'view'],
 
         '/categories/view/{id}' => [ CategoryController::class, 'view'],
+        '/categories/{id}/view' => [ CategoryController::class, 'view'],
 
         '/queue/run' => [ QueueController::class, 'run'],
         '/queue/list' => [ QueueController::class, 'list'],
@@ -49,12 +51,58 @@ class Dispatcher
         $url = $requestUri ?? '/';
 
         $route = null;
-
-        var_dump($url);
+        $controllerParams = [];
+        echo "<pre>";
+        var_dump($this->routes);
         foreach ($this->routes as $path => $controller) {
+            $isSmartPath = strpos($path, '{');
             if ($url == $path) {
                 $route = $controller;
                 break;
+            } else if ($isSmartPath) {
+
+
+                $isEqual = false;
+                $urlChunks = explode('/', $url);
+                $pathChunks = explode('/', $path);
+
+                echo "<pre>";
+                var_dump($pathChunks, $urlChunks);
+//                if (count($urlChunks) != count($pathChunks)){
+//                    break;
+//                }
+
+                $controllerParams = [];
+
+
+                for ($i =0; $i < count($pathChunks); $i++) {
+                    $urlChunk = $urlChunks[$i];
+                    $pathChunk = $pathChunks[$i];
+
+                    $isSmartChunk = strpos($pathChunk, '{') !== false && strpos($pathChunk, '}') !== false;
+
+                    if ($urlChunk == $pathChunk) {
+                        $isEqual = true;
+                    } else if ($isSmartChunk) {
+                        $paramName = str_replace(['{', '}'], '', $pathChunk);
+                        $controllerParams[$paramName] = $urlChunk;
+                        $isEqual = true;
+                        break;
+                    } else {
+                        $controllerParams = [];
+                        $isEqual = false;
+                        break;
+                    }
+                }
+
+                if (!$isEqual) {
+                    continue;
+                }
+
+                if ($isEqual === true) {
+                    $route = $controller;
+                    break;
+                }
             }
         }
 
@@ -67,7 +115,12 @@ class Dispatcher
         $class = $route[0];
         $method = $route[1];
 
-        $controller = new $class();
+//        echo "<pre>";
+//        var_dump($class, $method, $controllerParams);
+//        echo "</pre>";
+
+
+        $controller = new $class($controllerParams);
 
         if (method_exists($controller, $method)) {
             $controller->{$method}();

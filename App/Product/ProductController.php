@@ -24,6 +24,16 @@ use App\Response;
 class ProductController
 {
     /**
+     * @var array
+     */
+    private $params;
+
+    public function __construct(array $params)
+    {
+        $this->params = $params;
+    }
+
+    /**
      *
      */
     public function list(){
@@ -54,9 +64,10 @@ class ProductController
 
     public function edit()
     {
-        $productId = Request::getIntFromGet("id", false);
-
-
+        $productId = Request::getIntFromGet("id", null);
+        if (is_null($productId)) {
+            $productId = $this->params['id'] ?? null;
+        }
         $product = [];
 
         $productRepository = new Product\ProductRepository();
