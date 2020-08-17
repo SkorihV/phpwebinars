@@ -14,17 +14,18 @@ use App\Product;
 use App\Renderer;
 use App\Request;
 use App\Response;
+use App\Router\Route;
 
 class CategoryController
 {
     /**
-     * @var array
+     * @var Route
      */
-    private $params;
+    private $route;
 
-    public function __construct(array $params)
+    public function __construct(Route $route)
     {
-        $this->params = $params;
+        $this->route = $route;
     }
 
     public function add(){
@@ -63,7 +64,12 @@ class CategoryController
 
     public function edit()
     {
-        $id = Request::getIntFromGet("id");
+        $id = Request::getIntFromGet("id", null);
+
+
+        if (is_null($id)) {
+            $id = $this->route->getParam('id');
+        }
 
         $category = [];
 
@@ -97,7 +103,7 @@ class CategoryController
     public function view(){
         $category_id = Request::getIntFromGet("id", null);
         if (is_null($category_id)) {
-            $category_id = $this->params['id'] ?? null;
+            $category_id = $this->route->getParam('id');
         }
 
 
@@ -105,6 +111,7 @@ class CategoryController
 
 
         $products = Product::getListByCategory( $category_id);
+
         Renderer::getSmarty()->assign("current_category", $category); //передаем в шаблон id текущей категории чтобы её подсветить в меню
         Renderer::getSmarty()->assign("products", $products);
         Renderer::getSmarty()->display("categories/view.tpl");

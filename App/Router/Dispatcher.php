@@ -6,6 +6,9 @@ use App\Product\ProductController;
 use App\Queue\QueueController;
 use App\Import\ImportController;
 use App\Renderer;
+use App\Request;
+use App\Router\Exception\MethodDoesNotExistException;
+use App\Router\Exception\NotFoundException;
 
 /**
  * Created by PhpStorm.
@@ -19,12 +22,14 @@ class Dispatcher
         '/products/list' => [ ProductController::class, 'list'],
         '/products/edit' => [ ProductController::class, 'edit'],
         '/products/edit/{id}' => [ ProductController::class, 'edit'],
+        '/products/{id}/edit' => [ ProductController::class, 'edit'],
         '/products/add' => [ ProductController::class, 'add'],
         '/products/delete' => [ ProductController::class, 'delete'],
         '/products/delete_image' => [ ProductController::class, 'deleteImage'],
 
         '/categories/list' => [ CategoryController::class, 'list'],
         '/categories/edit' => [ CategoryController::class, 'edit'],
+        '/categories/edit/{id}' => [ CategoryController::class, 'edit'],
         '/categories/add' => [ CategoryController::class, 'add'],
         '/categories/delete' => [ CategoryController::class, 'delete'],
         '/categories/view' => [ CategoryController::class, 'view'],
@@ -42,93 +47,53 @@ class Dispatcher
 
     ];
 
+    /**
+     * @return mixed
+     */
     public function dispatch()
     {
-        $requestUri = $_SERVER['REQUEST_URI'];
-        $requestUri = explode('?', $requestUri);
-        $requestUri = $requestUri[0];
+        $url = Request::getUrl();
 
-        $url = $requestUri ?? '/';
+        $route = new Route($url);
 
-        $route = null;
-        $controllerParams = [];
-        echo "<pre>";
-        var_dump($this->routes);
         foreach ($this->routes as $path => $controller) {
-            $isSmartPath = strpos($path, '{');
-            if ($url == $path) {
-                $route = $controller;
+            if ($this->isValidPath($path, $route)){
                 break;
-            } else if ($isSmartPath) {
-
-
-                $isEqual = false;
-                $urlChunks = explode('/', $url);
-                $pathChunks = explode('/', $path);
-
-                echo "<pre>";
-                var_dump($pathChunks, $urlChunks);
-//                if (count($urlChunks) != count($pathChunks)){
-//                    break;
-//                }
-
-                $controllerParams = [];
-
-
-                for ($i =0; $i < count($pathChunks); $i++) {
-                    $urlChunk = $urlChunks[$i];
-                    $pathChunk = $pathChunks[$i];
-
-                    $isSmartChunk = strpos($pathChunk, '{') !== false && strpos($pathChunk, '}') !== false;
-
-                    if ($urlChunk == $pathChunk) {
-                        $isEqual = true;
-                    } else if ($isSmartChunk) {
-                        $paramName = str_replace(['{', '}'], '', $pathChunk);
-                        $controllerParams[$paramName] = $urlChunk;
-                        $isEqual = true;
-                        break;
-                    } else {
-                        $controllerParams = [];
-                        $isEqual = false;
-                        break;
-                    }
-                }
-
-                if (!$isEqual) {
-                    continue;
-                }
-
-                if ($isEqual === true) {
-                    $route = $controller;
-                    break;
-                }
             }
         }
+// Выдает ошибку на |
+//        try {
+//            $route->execute();
+//        } catch (NotFoundException | MethodDoesNotExistException $e) {
+//            $this->error404();
+//        }
 
-        if (is_null($route)) {
-            Renderer::getSmarty()->display('404.tpl');
-            exit;
+        try {
+            $route->execute();
+        } catch (NotFoundException $e) {
+            $this->error404();
         }
-
-
-        $class = $route[0];
-        $method = $route[1];
-
-//        echo "<pre>";
-//        var_dump($class, $method, $controllerParams);
-//        echo "</pre>";
-
-
-        $controller = new $class($controllerParams);
-
-        if (method_exists($controller, $method)) {
-            $controller->{$method}();
-        } else {
-            Renderer::getSmarty()->display('404.tpl');
-            exit;
-        }
-
 
     }
+
+    public function isValidPath(string $path, Route $route) {
+        $controller = $this->routes[$path];
+
+
+        $isValidPath = $route->isValidPath($path);
+        if ($isValidPath) {
+            $route->setController($controller[0]);
+            $route->setMethod($controller[1]);
+        }
+
+    return $isValidPath;
+
+    }
+
+    private function error404() {
+        Renderer::getSmarty()->display('404.tpl');
+        exit;
+    }
+
+
 }

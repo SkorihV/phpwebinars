@@ -30,6 +30,7 @@ class CategoryModel
 
     /**
      * @param int $id
+     * @return $this
      */
     public function setId(int $id)
     {
@@ -48,6 +49,7 @@ class CategoryModel
 
     /**
      * @param string $name
+     * @return $this
      */
     public function setName(string $name)
     {

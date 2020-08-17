@@ -45,7 +45,8 @@ class ProductImageModel
     }
 
     /**
-     * @param int $id
+     * @param $id
+     * @return $this
      */
     public function setId($id)
     {
@@ -62,7 +63,8 @@ class ProductImageModel
     }
 
     /**
-     * @param ProductModel $product
+     * @param $product
+     * @return $this
      */
     public function setProduct($product)
     {
@@ -79,7 +81,8 @@ class ProductImageModel
     }
 
     /**
-     * @param string $name
+     * @param $name
+     * @return $this
      */
     public function setName($name)
     {
@@ -96,7 +99,8 @@ class ProductImageModel
     }
 
     /**
-     * @param string $path
+     * @param $path
+     * @return $this
      */
     public function setPath($path)
     {
@@ -113,7 +117,8 @@ class ProductImageModel
     }
 
     /**
-     * @param int $size
+     * @param $size
+     * @return $this
      */
     public function setSize($size)
     {

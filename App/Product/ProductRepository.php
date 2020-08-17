@@ -67,7 +67,9 @@ class ProductRepository
     public function save(ProductModel $product): ProductModel
     {
 
+
         $id = $product->getId();
+
         $productArray = $this->productToArray($product);
 
 

@@ -19,18 +19,19 @@ use App\Request;
 
 use App\Product;
 use App\Response;
+use App\Router\Route;
 
 
 class ProductController
 {
     /**
-     * @var array
+     * @var Route
      */
-    private $params;
+    private $route;
 
-    public function __construct(array $params)
+    public function __construct(Route $route)
     {
-        $this->params = $params;
+        $this->route = $route;
     }
 
     /**
@@ -66,7 +67,7 @@ class ProductController
     {
         $productId = Request::getIntFromGet("id", null);
         if (is_null($productId)) {
-            $productId = $this->params['id'] ?? null;
+            $productId = $this->route->getParam('id');
         }
         $product = [];
 
