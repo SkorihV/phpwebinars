@@ -111,6 +111,7 @@ class Route
         if (method_exists($controller, $controllerMethod)) {
             return $controller->{$controllerMethod}();
         }
+        
         throw new MethodDoesNotExistException();
     }
 

@@ -3,13 +3,19 @@
 
 namespace App\Product;
 
-
+use App\CategoryService;
 use App\Category\CategoryModel;
 use App\Db\Db;
-use App\ProductImage as ProductImageService;
+//use App\ProductImageService as ProductImageService;
+use Exception;
 
 class ProductRepository
 {
+
+    public  function getListCount() {
+        $query = "SELECT COUNT(1) as c FROM products p LEFT JOIN categories c ON p.category_id = c.id";
+        return Db::fetchOne($query);
+    }
 
     /**
      * @param int $id
@@ -22,7 +28,8 @@ class ProductRepository
         $productArray =  Db::fetchRow($query);
         $product = $this->getProductFromArray($productArray);
 
-        $imagesData = ProductImageService::getListByProductId($product->getId());
+        $productImageService = new ProductImageService();
+        $imagesData = $productImageService->getListByProductId($product->getId());
 
 
         foreach ($imagesData as $imageItem) {
@@ -43,13 +50,15 @@ class ProductRepository
         $query = "SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id LIMIT $offset, $limit";
         $result = Db::query($query);
 
+        $productImageService = new \App\Product\ProductImageService();
+
         $products = [];
 
 
         while  ($productArray = Db::fetchAssoc($result) ){
           $product = $this->getProductFromArray($productArray);
 
-            $imagesData = ProductImageService::getListByProductId($product->getId());
+            $imagesData = $productImageService->getListByProductId($product->getId());
 
             foreach ($imagesData as $imageItem) {
                 $productImage = $this->getProductImageFromArray($imageItem);
@@ -140,7 +149,7 @@ class ProductRepository
             $categoryName = $data['category_name'] ?? null;
 
             if (is_null($categoryName)) {
-                $categoryData = \App\Category::getById($categoryId);
+                $categoryData = CategoryService::getById($categoryId);
                 $categoryName = $categoryData['name'];
 
             }

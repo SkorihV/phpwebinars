@@ -2,6 +2,7 @@
 namespace App\Router;
 
 use App\Category\CategoryController;
+use App\DI\Container;
 use App\Product\ProductController;
 use App\Queue\QueueController;
 use App\Import\ImportController;
@@ -49,6 +50,7 @@ class Dispatcher
 
     /**
      * @return mixed
+     * @throws MethodDoesNotExistException
      */
     public function dispatch()
     {
@@ -69,7 +71,53 @@ class Dispatcher
 //        }
 
         try {
-            $route->execute();
+//            $container = new Container();
+            $controllerClass = $route->getController();
+
+            if(is_null($controllerClass)) {
+                throw new NotFoundException();
+            }
+
+            $controller = new $controllerClass($route);
+
+            $controllerMethod = $route->getMethod();
+
+            if(method_exists($controller, $controllerMethod)) {
+
+                $reflectionClass = new \ReflectionClass($controllerClass);
+                $reflectionMethod = $reflectionClass->getMethod($controllerMethod);
+
+                $reflectionParameters = $reflectionMethod->getParameters();
+
+                $arguments = [];
+
+                foreach ($reflectionParameters as $parameter) {
+                    /**
+                     * @var \ReflectionParameter $parameter
+                     */
+
+                    $parameterName = $parameter->getName();
+                    $parameterType = $parameter->getType();
+
+
+                    $className = $parameterType->getName();
+
+                    if (class_exists($className)){
+                        $arguments[$parameterName] = new $className();
+                    }
+
+                }
+
+                return call_user_func_array([$controller, $controllerMethod], $arguments);
+
+//                return $controller->{$controllerMethod}();
+
+            }
+            throw new MethodDoesNotExistException();
+
+
+
+  //          $route->execute();
         } catch (NotFoundException $e) {
             $this->error404();
         }

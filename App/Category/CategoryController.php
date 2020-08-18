@@ -9,8 +9,8 @@
 namespace App\Category;
 
 
-use App\Category;
-use App\Product;
+use App\CategoryService;
+use App\ProductImageService;
 use App\Renderer;
 use App\Request;
 use App\Response;
@@ -30,8 +30,8 @@ class CategoryController
 
     public function add(){
         if (Request::isPost()){
-            $category = Category::getDataFromPost();
-            $inserted = Category::add($category);
+            $category = CategoryService::getDataFromPost();
+            $inserted = CategoryService::add($category);
 
             if($inserted){
                 Response::redirect('/categories/list');
@@ -52,7 +52,7 @@ class CategoryController
             die ("Ошибка идентификатора");
         }
 
-        $deleted = Category::deleteById($category_id);
+        $deleted = CategoryService::deleteById($category_id);
 
         if($deleted){
             Response::redirect('/categories/list');
@@ -74,12 +74,12 @@ class CategoryController
         $category = [];
 
         if ($id) {
-            $category = Category::getById($id);
+            $category = CategoryService::getById($id);
         }
 
         if (Request::isPost()){
-            $category = Category::getDataFromPost();
-            $edited = Category::updateById($id, $category);
+            $category = CategoryService::getDataFromPost();
+            $edited = CategoryService::updateById($id, $category);
 
 
             if($edited){
@@ -94,7 +94,7 @@ class CategoryController
     }
 
     public function list(){
-        $categories = Category::getList();
+        $categories = CategoryService::getList();
 
         Renderer::getSmarty()->assign('categories', $categories);
         Renderer::getSmarty()->display('categories/index.tpl');
@@ -107,10 +107,10 @@ class CategoryController
         }
 
 
-        $category = Category::getById($category_id);
+        $category = CategoryService::getById($category_id);
 
 
-        $products = Product::getListByCategory( $category_id);
+        $products = ProductImageService::getListByCategory( $category_id);
 
         Renderer::getSmarty()->assign("current_category", $category); //передаем в шаблон id текущей категории чтобы её подсветить в меню
         Renderer::getSmarty()->assign("products", $products);
