@@ -58,7 +58,7 @@ class Route
     /**
      * @return string|null
      */
-    public function getController(): string
+    public function getController(): ?string
     {
         return $this->controller;
     }

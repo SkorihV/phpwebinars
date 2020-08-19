@@ -33,8 +33,9 @@ class ProductController
     /**
      * @param ProductRepository $productRepository
      * @param Request $request
+     *
+     * @route("/product_list")
      */
-
     public function list(ProductRepository $productRepository, Request $request){
         $current_page = $request->getIntFromGet("p", 1);
 
@@ -65,6 +66,8 @@ class ProductController
      * @param ProductImageService $productImageService
      * @param Response $response
      * @param CategoryService $categoryService
+     *
+     * @route("/product_edit/{id}")
      */
     public function edit(
         Request $request,
