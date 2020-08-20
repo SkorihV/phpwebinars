@@ -11,6 +11,8 @@ use App\Request;
 use App\Router\Exception\MethodDoesNotExistException;
 use App\Router\Exception\NotFoundException;
 
+use ReflectionObject;
+
 /**
  * Created by PhpStorm.
  * User: vitaliy.skoryh
@@ -92,7 +94,7 @@ class Dispatcher
     }
 
     /**
-     * @return mixed
+     * @return mixed|null
      * @throws MethodDoesNotExistException
      */
     public function dispatch()
@@ -114,46 +116,26 @@ class Dispatcher
 //        }
 
         try {
-//            $container = new Container();
+
             $controllerClass = $route->getController();
 
             if(is_null($controllerClass)) {
                 throw new NotFoundException();
             }
 
-            $controller = new $controllerClass($route);
+            $container = new Container();
+            $controller = $container->getController($controllerClass);
+
+            $renderer = $container->get(Renderer::class);
+            $container->setProperty($controller, 'renderer', $renderer);
+            $container->setProperty($controller, 'route', $route);
 
             $controllerMethod = $route->getMethod();
 
-            if(method_exists($controller, $controllerMethod)) {
-
-                $reflectionClass = new \ReflectionClass($controllerClass);
-                $reflectionMethod = $reflectionClass->getMethod($controllerMethod);
-
-                $reflectionParameters = $reflectionMethod->getParameters();
-
-                $arguments = [];
-
-                foreach ($reflectionParameters as $parameter) {
-                    /**
-                     * @var \ReflectionParameter $parameter
-                     */
-
-                    $parameterName = $parameter->getName();
-                    $parameterType = $parameter->getType();
-
-                    $className = $parameterType->getName();
-
-                    if (class_exists($className)){
-                        $arguments[$parameterName] = new $className();
-                    }
-
-                }
-
-                return call_user_func_array([$controller, $controllerMethod], $arguments);
 
 
-
+            if (method_exists($controller, $controllerMethod)) {
+                return $container->call($controller, $controllerMethod);
             }
             throw new MethodDoesNotExistException();
 
@@ -171,6 +153,7 @@ class Dispatcher
         $controller = $routes[$path];
 
         $isValidPath = $route->isValidPath($path);
+
         if ($isValidPath) {
             $route->setController($controller[0]);
             $route->setMethod($controller[1]);
