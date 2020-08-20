@@ -12,6 +12,7 @@ use App\Router\Exception\MethodDoesNotExistException;
 use App\Router\Exception\NotFoundException;
 
 use ReflectionObject;
+use Smarty;
 
 /**
  * Created by PhpStorm.
@@ -21,6 +22,16 @@ use ReflectionObject;
  */
 class Dispatcher
 {
+    /**
+     * @var Container
+     */
+    private $di;
+
+    public function __construct(Container $di)
+    {
+        $this->di = $di;
+    }
+
     protected $routes = [
         '/products/list' => [ ProductController::class, 'list'],
         '/products/edit' => [ ProductController::class, 'edit'],
@@ -123,19 +134,20 @@ class Dispatcher
                 throw new NotFoundException();
             }
 
-            $container = new Container();
-            $controller = $container->getController($controllerClass);
+            $di = $this->getDi();
 
-            $renderer = $container->get(Renderer::class);
-            $container->setProperty($controller, 'renderer', $renderer);
-            $container->setProperty($controller, 'route', $route);
+            $controller = $di->get($controllerClass);
+
+            $renderer = $di->get(Renderer::class);
+            $di->setProperty($controller, 'renderer', $renderer);
+            $di->setProperty($controller, 'route', $route);
 
             $controllerMethod = $route->getMethod();
 
 
 
             if (method_exists($controller, $controllerMethod)) {
-                return $container->call($controller, $controllerMethod);
+                return $di->call($controller, $controllerMethod);
             }
             throw new MethodDoesNotExistException();
 
@@ -214,6 +226,14 @@ class Dispatcher
             }
         }
         return $routes;
+    }
+
+    /**
+     * @return Container
+     */
+    public function getDi()
+    {
+        return $this->di;
     }
 
 }
