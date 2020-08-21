@@ -119,12 +119,8 @@ class Dispatcher
             }
         }
 
-// Выдает ошибку на |
-//        try {
-//            $route->execute();
-//        } catch (NotFoundException | MethodDoesNotExistException $e) {
-//            $this->error404();
-//        }
+
+
 
         try {
 
@@ -136,11 +132,13 @@ class Dispatcher
 
             $di = $this->getDi();
 
-            $controller = $di->get($controllerClass);
+            $controller = $di->get($controllerClass, [
+                Route::class => $route,
+            ]);
 
-            $renderer = $di->get(Renderer::class);
-            $di->setProperty($controller, 'renderer', $renderer);
-            $di->setProperty($controller, 'route', $route);
+//            $renderer = $di->get(Renderer::class);
+//            $di->setProperty($controller, 'renderer', $renderer);
+//            $di->setProperty($controller, 'route', $route);
 
             $controllerMethod = $route->getMethod();
 
@@ -153,6 +151,8 @@ class Dispatcher
 
 
   //          $route->execute();
+            // Выдает ошибку на |
+//   } catch (NotFoundException | MethodDoesNotExistException $e) {
         } catch (NotFoundException $e) {
             $this->error404();
         }
@@ -197,25 +197,27 @@ class Dispatcher
                 continue;
             }
 
-            $docComment = (string) $reflectionMethod->getDocComment();
-            $docComment = str_replace(['/**', '*/'], '', $docComment);
-            $docComment = trim($docComment);
-            $docCommentArray = explode("\n", $docComment);
+            $docCommentArray = $this->getDi()->parseDocComment($reflectionMethod);
 
-            $docCommentArray = array_map(function($item){
-                $item = trim($item);
-
-                $position = strpos($item, '*');
-                if($position === 0){
-                    $item = substr($item, 1);
-                }
-
-                return trim($item);
-            }, $docCommentArray);
+//            $docComment = (string)$reflectionMethod->getDocComment();
+//            $docComment = str_replace(['/**', '*/'], '', $docComment);
+//            $docComment = trim($docComment);
+//            $docCommentArray = explode("\n", $docComment);
+//
+//            $docCommentArray = array_map(function($item){
+//                $item = trim($item);
+//
+//                $position = strpos($item, '*');
+//                if($position === 0){
+//                    $item = substr($item, 1);
+//                }
+//
+//                return trim($item);
+//            }, $docCommentArray);
 
             foreach ($docCommentArray as $docString) {
 
-                $isRoute = strpos($docString, '@route') === 0;
+                $isRoute = strpos($docString, '@route(') === 0;
                 if (empty($docString) || !$isRoute){
                     continue;
                 }

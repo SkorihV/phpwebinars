@@ -11,16 +11,17 @@ namespace App\Controller;
 use App\Renderer;
 use App\Router\Route;
 
-
 class AbstractController
 {
     /**
      * @var Renderer
+     * @onInit(App\Renderer)
      */
     protected $renderer;
 
     /**
      * @var Route
+     * @onInit(App\Router\Route)
      */
     protected $route;
 
