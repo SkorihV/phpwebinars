@@ -119,9 +119,6 @@ class Dispatcher
             }
         }
 
-
-
-
         try {
 
             $controllerClass = $route->getController();
@@ -142,13 +139,10 @@ class Dispatcher
 
             $controllerMethod = $route->getMethod();
 
-
-
             if (method_exists($controller, $controllerMethod)) {
                 return $di->call($controller, $controllerMethod);
             }
             throw new MethodDoesNotExistException();
-
 
   //          $route->execute();
             // Выдает ошибку на |
@@ -174,12 +168,14 @@ class Dispatcher
     return $isValidPath;
     }
 
-    private function error404() {
+    private function error404()
+    {
         Renderer::getSmarty()->display('404.tpl');
         exit;
     }
 
-    private function getRoutesByControllerFile(string $filePath) {
+    private function getRoutesByControllerFile(string $filePath)
+    {
 
         $routes = [];
 

@@ -181,6 +181,7 @@ class Container
             $docCommentArray = $this->parseDocComment($reflectionProperty);
 
 
+            
             $dependencyClass = null;
             foreach ($docCommentArray as $docComment) {
                 $onInitPrefix = '@onInit(';
