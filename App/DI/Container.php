@@ -19,7 +19,6 @@ use ReflectionProperty;
 
 class Container
 {
-
     /**
      * @var callable[]
      */
