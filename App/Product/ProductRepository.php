@@ -118,7 +118,7 @@ class ProductRepository
     /**
      * @param array $data
      * @return ProductModel
-     * @throws \Exception
+     * @throws Exception
      */
     public function getProductFromArray(array $data): ProductModel
     {
