@@ -110,7 +110,9 @@ class Dispatcher
      */
     public function dispatch()
     {
-        $url = Request::getUrl();
+        $request = new Request();
+        $url = $request->getUrl();
+
         $route = new Route($url);
 
         foreach ($this->getRouts() as $path => $controller) {
