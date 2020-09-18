@@ -12,12 +12,59 @@ use App\FS\FS;
  */
 
 
+/*
+ * Config implements \ArrayAccess
+ * Если добавляется данный интерфейс то к объекту
+ * можно будет обращаться как к массиву
+ * */
 
-class Config
+
+class Config implements \ArrayAccess
 {
+    private $data = [];
+
+    public function __construct(array $config)
+    {
+        foreach ($config as $key => $value) {
+            if (is_array($value)){
+                $value = new self($value);
+            }
+            $this->{$key} = $value;
+        }
+    }
+
+    public function __get(string $key)
+    {
+        return $this->data[$key] ?? (new NullConfig());
+    }
+
+    public function __set(string $key, $value)
+    {
+        $this->data[$key] = $value;
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->data[$offset]);
+    }
+
+    public function offsetGet($offset)
+    {
+        return $this->data[$offset];
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        $this->{$offset} = $value;
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($this->data[$offset]);
+    }
 
 
-    public function parse($dirname)
+    public static function create(string $dirname)
     {
 
         $dirname = APP_DIR . '/' . $dirname;
@@ -35,7 +82,7 @@ class Config
 
         foreach ($fileList as $fileConfig) {
             if ( strpos($fileConfig, 'conf.d') !== false) {
-                $config = $this->parseConfigPath($fileConfig, $dirname . '/conf.d/');
+                $config = static::parseConfigPath($fileConfig, $dirname . '/conf.d/');
                 $namePath = $config['namePath'];
                 $src = [$namePath => $config['src']];
 
@@ -62,18 +109,18 @@ class Config
                 continue;
             }
 
-            $config = $this->parseConfigPath($fileConfig, $dirname . '/');
+            $config = static::parseConfigPath($fileConfig, $dirname . '/');
             $appConfigs = array_merge_recursive($appConfigs, $config['src']);
         }
 
         $config = array_replace_recursive($defaultConfigs, $appConfigs);
 
+        return new self($config);
 
-        echo "<pre>";
-        var_dump($config);
+
     }
 
-    private function parseConfigPath(string  $configFilePath, string $replacePart = '')
+    private static function parseConfigPath(string  $configFilePath, string $replacePart = '')
     {
         if (!file_exists($configFilePath)) {
             throw new ConfigDirectoryNotFoundException($configFilePath);

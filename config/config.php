@@ -30,7 +30,7 @@
 
 
 return [
-    'database' => [
+    'db' => [
         'host' => 'localhost',
         'username' => 'skorihv',
         'password' => '',

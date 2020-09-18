@@ -24,8 +24,11 @@ class Kernel
     public function __construct()
     {
         $configDir = 'config';
-        $config = new Config();
-        $config->parse($configDir);
+        $config = Config::create($configDir);
+
+        echo "<pre>";
+        var_dump($config->db);
+        var_dump($config['db']);
     }
 
     public function run()
