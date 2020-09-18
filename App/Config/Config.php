@@ -30,28 +30,47 @@ class Config
         $fileList = $fs->scanDir($dirname);
 
 
-        $defaultConfig = [];
-        $appConfig = [];
+        $defaultConfigs = [];
+        $appConfigs = [];
 
         foreach ($fileList as $fileConfig) {
             if ( strpos($fileConfig, 'conf.d') !== false) {
-                $defaultConfig[] = $this->parseConfigPath($fileConfig, $dirname . '/conf.d');
+                $config = $this->parseConfigPath($fileConfig, $dirname . '/conf.d/');
+                $namePath = $config['namePath'];
+                $src = [$namePath => $config['src']];
+
+                if (strpos($namePath, '/') !== false) {
+                    $namePath = explode('/', $namePath);
+
+                    $src = [];
+                    $currentSrcItem = &$src;
+                    foreach ($namePath as $key => $pathItem) {
+                        if ($key == count($namePath) - 1) {
+                            $currentSrcItem[$pathItem] = $config['src'];
+                            break;
+                        }
+
+                        $currentSrcItem[$pathItem] = [];
+                        $currentSrcItem = &$currentSrcItem[$pathItem];
+                    }
+
+                    unset($currentSrcItem);
+                }
+
+
+                $defaultConfigs = array_merge_recursive($defaultConfigs, $src);
                 continue;
             }
 
-            $appConfig[] = $this->parseConfigPath($fileConfig, $dirname . '/');;
+            $config = $this->parseConfigPath($fileConfig, $dirname . '/');
+            $appConfigs = array_merge_recursive($appConfigs, $config['src']);
         }
 
-//        $fileList = array_map(function($item) use ($dirname){
-//            return str_replace($dirname, '', $item);
-//        }, $fileList);
+        $config = array_replace_recursive($defaultConfigs, $appConfigs);
 
-//        foreach ($fileList as &$fileName) {
-//            $fileName = str_replace(APP_DIR, '', $fileName);
-//        }
 
         echo "<pre>";
-        var_dump($defaultConfig, $appConfig);
+        var_dump($config);
     }
 
     private function parseConfigPath(string  $configFilePath, string $replacePart = '')
@@ -62,7 +81,8 @@ class Config
 
         $data = [];
         $data['src'] = include $configFilePath;
-        $data['namePath'] = str_replace($replacePart, '', $configFilePath);
+        $namePath = str_replace($replacePart, '', $configFilePath);
+        $data['namePath'] = str_replace('.php', '', $namePath);
 
         return $data;
     }
