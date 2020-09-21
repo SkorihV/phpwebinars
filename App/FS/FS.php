@@ -11,7 +11,6 @@ namespace App\FS;
 
 class FS
 {
-
     public function deleteDir($dir) {
         $files = array_diff(scandir($dir), array('.','..')); // получаем список вложенных файлов и папок
 
@@ -51,4 +50,6 @@ class FS
 
         return $fileNames;
     }
+
+
 }

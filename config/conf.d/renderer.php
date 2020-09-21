@@ -7,6 +7,6 @@
  */
 
 return [
-    'templateDir' => __DIR__ . '/../../templates',
-    'compileDir' => __DIR__ . '/../../var/compile',
+    'templateDir' => realpath( __DIR__ . '/../../templates'),
+    'compileDir' => realpath( __DIR__ . '/../../var/compile'),
 ];

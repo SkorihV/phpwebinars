@@ -3,6 +3,8 @@
 namespace App\Config;
 use App\Config\Exception\ConfigDirectoryNotFoundException;
 use App\FS\FS;
+use ArrayAccess;
+use Iterator;
 
 /**
  * Created by PhpStorm.
@@ -19,9 +21,11 @@ use App\FS\FS;
  * */
 
 
-class Config implements \ArrayAccess
+class Config implements ArrayAccess, Iterator
 {
     private $data = [];
+
+    private $dataKeys = [];
 
     public function __construct(array $config)
     {
@@ -41,6 +45,7 @@ class Config implements \ArrayAccess
     public function __set(string $key, $value)
     {
         $this->data[$key] = $value;
+        $this->dataKeys = array_keys($this->data);
     }
 
     public function offsetExists($offset)
@@ -61,6 +66,39 @@ class Config implements \ArrayAccess
     public function offsetUnset($offset)
     {
         unset($this->data[$offset]);
+    }
+
+
+    /*
+     * \Iterator  необходим чтобы можно было класс config пускать по циклу
+     *
+     *
+     * */
+    public function current()
+    {
+        $key = current($this->dataKeys);
+        return $this[$key];
+    }
+
+    public function next()
+    {
+        $key = next($this->dataKeys);
+        return $this[$key];
+    }
+
+    public function key()
+    {
+        return current($this->dataKeys);
+    }
+
+    public function valid()
+    {
+        return $this->key() !== false;
+    }
+
+    public function rewind()
+    {
+        reset($this->dataKeys);
     }
 
 

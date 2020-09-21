@@ -1,18 +1,17 @@
 <?php
 namespace App\Router;
 
-use App\Category\CategoryController;
-use App\DI\Container;
-use App\Product\ProductController;
-use App\Queue\QueueController;
-use App\Import\ImportController;
-use App\Renderer;
-use App\Request;
-use App\Router\Exception\MethodDoesNotExistException;
-use App\Router\Exception\NotFoundException;
 
-use ReflectionObject;
-use Smarty;
+use App\Config\Config;
+use App\DI\Container;
+use App\FS\FS;
+use App\Http\Response;
+use App\Router\Exception\ControllerDoesNotExistException;
+use App\Router\Exception\MethodDoesNotExistException;
+use App\Router\Exception\ExpectToRecieveResponceObjectException;
+use App\Router\Exception\NotFoundException;
+use ReflectionException;
+
 
 /**
  * Created by PhpStorm.
@@ -22,98 +21,45 @@ use Smarty;
  */
 class Dispatcher
 {
-    /**
-     * @var Container
-     */
-    private $di;
+    use RouteCollectionTrait;
+
+//    /**
+//     * @var Container
+//     */
+//    private $di;
+//
+//    /**
+//     * @var Config
+//     */
+//    private $config;
+//
+//    /**
+//     * @var FS
+//     */
+//    private $fs;
 
     public function __construct(Container $di)
     {
         $this->di = $di;
+        $this->config = $di->get(Config::class);
+        $this->fs = $di->get(FS::class);
     }
 
-    protected $routes = [
-        '/products/list' => [ ProductController::class, 'list'],
-        '/products/edit' => [ ProductController::class, 'edit'],
-        '/products/edit/{id}' => [ ProductController::class, 'edit'],
-        '/products/{id}/edit' => [ ProductController::class, 'edit'],
-        '/products/add' => [ ProductController::class, 'add'],
-        '/products/delete' => [ ProductController::class, 'delete'],
-        '/products/delete_image' => [ ProductController::class, 'deleteImage'],
-
-        '/categories/list' => [ CategoryController::class, 'list'],
-        '/categories/edit' => [ CategoryController::class, 'edit'],
-        '/categories/edit/{id}' => [ CategoryController::class, 'edit'],
-        '/categories/add' => [ CategoryController::class, 'add'],
-        '/categories/delete' => [ CategoryController::class, 'delete'],
-        '/categories/view' => [ CategoryController::class, 'view'],
-
-        '/categories/view/{id}' => [ CategoryController::class, 'view'],
-        '/categories/{id}/view' => [ CategoryController::class, 'view'],
-
-        '/queue/run' => [ QueueController::class, 'run'],
-        '/queue/list' => [ QueueController::class, 'list'],
-
-        '/imports/index' => [ ImportController::class, 'index'],
-        '/imports/upload' => [ ImportController::class, 'upload'],
-    ];
-
-    protected function getRouts():array
-    {
-        $routes = $this->routes;
-
-//        $controllerFile = APP_DIR . '/App/Product/ProductController.php';
-
-        $files = $this->scanDir(APP_DIR . '/App');
-
-        foreach ($files as $filePath) {
-            if(strpos($filePath, 'Controller.php') === false) {
-                continue;
-            }
-
-            $controllerRoutes = $this->getRoutesByControllerFile($filePath);
-            $routes = array_merge($routes, $controllerRoutes);
-        }
-
-
-        return $routes;
-    }
 
     /**
-     * @param string $dirName
-     * @return array
-     */
-    protected function scanDir(string $dirName) {
-        $list = scandir($dirName);
-
-        $list = array_filter($list, function($item){
-            return !in_array($item, ['.','..']);
-        });
-
-        $fileNames = [];
-
-        foreach ($list as $fileItem) {
-            $filePath = $dirName . '/' . $fileItem;
-            if (!is_dir($filePath)) {
-                $fileNames[] = $filePath;
-            } else {
-                $fileNames = array_merge($fileNames, $this->scanDir($filePath));
-            }
-        }
-
-        return $fileNames;
-    }
-
-    /**
-     * @return mixed|null
+     * @return Response
+     * @throws ControllerDoesNotExistException
+     * @throws ExpectToRecieveResponceObjectException
      * @throws MethodDoesNotExistException
+     * @throws NotFoundException
+     * @throws ReflectionException
      */
     public function dispatch()
     {
-        $request = new Request();
-        $url = $request->getUrl();
-
-        $route = new Route($url);
+         /**
+         * @var $route Route
+         */
+        $route = $this->di->get(Route::class);
 
         foreach ($this->getRouts() as $path => $controller) {
             if ($this->isValidPath($path, $route)){
@@ -121,119 +67,94 @@ class Dispatcher
             }
         }
 
-        try {
+        $controllerClass = $route->getController();
 
-            $controllerClass = $route->getController();
-
-            if(is_null($controllerClass)) {
-                throw new NotFoundException();
-            }
-
-            $di = $this->getDi();
-
-            $controller = $di->get($controllerClass, [
-                Route::class => $route,
-            ]);
-
-//            $renderer = $di->get(Renderer::class);
-//            $di->setProperty($controller, 'renderer', $renderer);
-//            $di->setProperty($controller, 'route', $route);
-
-            $controllerMethod = $route->getMethod();
-
-            if (method_exists($controller, $controllerMethod)) {
-                return $di->call($controller, $controllerMethod);
-            }
-            throw new MethodDoesNotExistException();
-
-  //          $route->execute();
-            // Выдает ошибку на |
-//   } catch (NotFoundException | MethodDoesNotExistException $e) {
-        } catch (NotFoundException $e) {
-            $this->error404();
+        if(is_null($controllerClass)) {
+            throw new NotFoundException();
         }
+
+        if(!class_exists($controllerClass)) {
+            throw new ControllerDoesNotExistException();
+        }
+
+        $controller = $this->di->get($controllerClass, [
+            Route::class => $route,
+        ]);
+
+        $controllerMethod = $route->getMethod();
+
+        if (!method_exists($controller, $controllerMethod)) {
+            throw new MethodDoesNotExistException();
+        }
+        $response =  $this->di->call($controller, $controllerMethod);
+
+        if (!($response instanceof Response)) {
+            throw new ExpectToRecieveResponceObjectException();
+        }
+
+        return $response;
 
     }
 
-    public function isValidPath(string $path, Route $route) {
+    private function isValidPath(string $path, Route $route) {
 
         $routes = $this->getRouts();
         $controller = $routes[$path];
 
-        $isValidPath = $route->isValidPath($path);
+        $isValidPath = $route->getUrl() == $path || $this->checkSmartPath($path, $route);
 
         if ($isValidPath) {
             $route->setController($controller[0]);
             $route->setMethod($controller[1]);
         }
 
-    return $isValidPath;
+        return $isValidPath;
     }
 
-    private function error404()
+    private function checkSmartPath(string $path, Route $route): bool
     {
-        Renderer::getSmarty()->display('404.tpl');
-        exit;
-    }
+        $isSmartPath = strpos($path, '{');
 
-    private function getRoutesByControllerFile(string $filePath)
-    {
+        if(!$isSmartPath) {
+            return false;
+        }
 
-        $routes = [];
+        $route->clearParams();
 
-        $controllerClassName = str_replace([APP_DIR . '/', '.php'], '', $filePath);
-        $controllerClassName = str_replace('/', '\\', $controllerClassName);
+        $isEqual = false;
+        $url = $route->getUrl();
 
-        $reflectionClass = new \ReflectionClass($controllerClassName);
-        $reflectionMethods = $reflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC);
+        $urlChunks = explode('/', $url);
+        $pathChunks = explode('/', $path);
 
-//        $routes = [];
 
-        foreach ($reflectionMethods as $reflectionMethod){
+        if (count($urlChunks) != count($pathChunks)){
+            return false;
+        }
 
-            if ($reflectionMethod->isConstructor()) {
+        for ($i =0; $i < count($pathChunks); $i++) {
+            $urlChunk = $urlChunks[$i];
+            $pathChunk = $pathChunks[$i];
+
+            $isSmartChunk = strpos($pathChunk, '{') !== false && strpos($pathChunk, '}') !== false;
+
+            if ($urlChunk == $pathChunk) {
+                $isEqual = true;
+                continue;
+            } else if ($isSmartChunk) {
+                $paramName = str_replace(['{', '}'], '', $pathChunk);
+                $route->setParam($paramName, $urlChunk);
+
+                $isEqual = true;
+
                 continue;
             }
-
-            $docCommentArray = $this->getDi()->parseDocComment($reflectionMethod);
-
-//            $docComment = (string)$reflectionMethod->getDocComment();
-//            $docComment = str_replace(['/**', '*/'], '', $docComment);
-//            $docComment = trim($docComment);
-//            $docCommentArray = explode("\n", $docComment);
-//
-//            $docCommentArray = array_map(function($item){
-//                $item = trim($item);
-//
-//                $position = strpos($item, '*');
-//                if($position === 0){
-//                    $item = substr($item, 1);
-//                }
-//
-//                return trim($item);
-//            }, $docCommentArray);
-
-            foreach ($docCommentArray as $docString) {
-
-                $isRoute = strpos($docString, '@route(') === 0;
-                if (empty($docString) || !$isRoute){
-                    continue;
-                }
-
-                $url = str_replace(['@route("', '")'], '', $docString);
-                $routes[$url] = [$controllerClassName, $reflectionMethod->getName()];
-
-            }
+            $isEqual = false;
+            break;
         }
-        return $routes;
+        return $isEqual;
+
     }
 
-    /**
-     * @return Container
-     */
-    public function getDi()
-    {
-        return $this->di;
-    }
 
 }

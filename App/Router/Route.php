@@ -9,6 +9,7 @@
 namespace App\Router;
 
 
+use App\Http\Request;
 use App\Router\Exception\MethodDoesNotExistException;
 use App\Router\Exception\NotFoundException;
 
@@ -32,9 +33,9 @@ class Route
     private $param = [];
 
 
-    public function __construct(string $url)
+    public function __construct(Request $request)
     {
-        $this->url = $url;
+        $this->url = $request->getUrl();
     }
 
     /**
@@ -47,9 +48,9 @@ class Route
 
     /**
      * @param string|null $url
-     * @return Route
+     * @return $this
      */
-    public function setUrl(string $url): Route
+    public function setUrl(?string $url): Route
     {
         $this->url = $url;
         return $this;
@@ -131,51 +132,6 @@ class Route
         return $this;
     }
 
-    public function isValidPath(string $path) {
-        return $this->getUrl() == $path || $this->checkSmartPath($path);
-    }
-    private function checkSmartPath(string $path): bool
-    {
-        $isSmartPath = strpos($path, '{');
-
-        if(!$isSmartPath) {
-            return false;
-        }
-
-        $this->clearParams();
-
-        $isEqual = false;
-        $url = $this->getUrl();
-
-        $urlChunks = explode('/', $url);
-        $pathChunks = explode('/', $path);
 
 
-        if (count($urlChunks) != count($pathChunks)){
-            return false;
-        }
-
-        for ($i =0; $i < count($pathChunks); $i++) {
-            $urlChunk = $urlChunks[$i];
-            $pathChunk = $pathChunks[$i];
-
-            $isSmartChunk = strpos($pathChunk, '{') !== false && strpos($pathChunk, '}') !== false;
-
-            if ($urlChunk == $pathChunk) {
-                $isEqual = true;
-                continue;
-            } else if ($isSmartChunk) {
-                $paramName = str_replace(['{', '}'], '', $pathChunk);
-                $this->setParam($paramName, $urlChunk);
-
-                $isEqual = true;
-
-                continue;
-            }
-            $isEqual = false;
-            break;
-        }
-        return $isEqual;
-
-    }
 }

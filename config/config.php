@@ -35,8 +35,5 @@ return [
         'username' => 'skorihv',
         'password' => '',
         'databasename' => 'phpwebinars',
-    ],
-    'renderer' => [
-        'templateDir' => '',
     ]
 ];

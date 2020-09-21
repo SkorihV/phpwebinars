@@ -1,12 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: vitaliy.skoryh
- * Date: 17.09.20
- * Time: 15:41
- */
+
+use App\Http\Request;
+use App\Http\Response;
+
 
 return [
-  App\Request::class,
-    App\Response::class,
+    Request::class,
+    Response::class,
 ];

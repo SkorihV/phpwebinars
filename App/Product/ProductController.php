@@ -13,8 +13,8 @@ use App\CategoryService;
 use App\Category\CategoryModel;
 use App\Controller\AbstractController;
 
-use App\Request;
-use App\Response;
+use App\Http\Request;
+use App\Http\Response;
 
 
 
