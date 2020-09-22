@@ -23,20 +23,7 @@ class Dispatcher
 {
     use RouteCollectionTrait;
 
-//    /**
-//     * @var Container
-//     */
-//    private $di;
-//
-//    /**
-//     * @var Config
-//     */
-//    private $config;
-//
-//    /**
-//     * @var FS
-//     */
-//    private $fs;
+
 
     public function __construct(Container $di)
     {

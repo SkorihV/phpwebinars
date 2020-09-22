@@ -5,7 +5,9 @@ namespace App\Router\Exception;
 
 
 
-class ExpectToRecieveResponceObjectException extends \Exception
+use Exception;
+
+class ExpectToRecieveResponceObjectException extends Exception
 {
 
 }

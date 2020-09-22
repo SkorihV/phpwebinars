@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Product;
+namespace App\Data\Product;
 
-use App\CategoryService;
-use App\Category\CategoryModel;
+use App\Data\CategoryService;
+use App\Data\Category\CategoryModel;
 use App\Db\Db;
 //use App\ProductImageService as ProductImageService;
 use Exception;
@@ -50,7 +50,7 @@ class ProductRepository
         $query = "SELECT p.*, c.name as category_name FROM products p LEFT JOIN categories c ON p.category_id = c.id LIMIT $offset, $limit";
         $result = Db::query($query);
 
-        $productImageService = new \App\Product\ProductImageService();
+        $productImageService = new ProductImageService();
 
         $products = [];
 

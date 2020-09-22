@@ -1,8 +1,9 @@
 <?php
 
-namespace App;
+namespace App\Data;
 
 use App\Db\Db;
+use App\Http\Request;
 
 class CategoryService {
     public  function getList() {

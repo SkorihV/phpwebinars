@@ -7,12 +7,12 @@
  * Time: 15:37
  */
 
-namespace App\Import;
+namespace App\Data\Import;
 
-use App\Import;
-use App\Renderer;
-use App\Response;
-use App\TasksQueue;
+use App\Data\Import;
+use App\Renderer\Renderer;
+use App\Http\Response;
+use App\Data\TasksQueue;
 
 class importController
 {

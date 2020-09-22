@@ -6,9 +6,9 @@
  * Time: 11:16
  */
 
-namespace App;
+namespace App\Renderer;
 
-use Smarty;
+use \Smarty;
 
 class Renderer
 {
@@ -32,7 +32,6 @@ class Renderer
 
     protected static function init()
     {
-
         $smarty = new Smarty();
 
         $smarty->template_dir = APP_DIR . '/templates';
@@ -43,6 +42,10 @@ class Renderer
         static::$smarty = $smarty;
     }
 
+    /**
+     * @param string $template
+     * @param array $data
+     **/
     public function render(string $template, array $data = [])
     {
 
@@ -50,7 +53,7 @@ class Renderer
             $this->_smarty->assign($key, $value);
         }
 
-        $this->_smarty->display($template);
+        return $this->_smarty->fetch($template);
     }
 
 }

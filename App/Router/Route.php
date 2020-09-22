@@ -8,10 +8,7 @@
 
 namespace App\Router;
 
-
 use App\Http\Request;
-use App\Router\Exception\MethodDoesNotExistException;
-use App\Router\Exception\NotFoundException;
 
 class Route
 {
@@ -90,30 +87,6 @@ class Route
     {
         $this->method = $method;
         return $this;
-    }
-
-    /**
-     * @return mixed
-     * @throws MethodDoesNotExistException
-     * @throws NotFoundException
-     */
-    public function execute() {
-//        $controller = new ($this->getController())($controllerParams);
-        $controllerClass = $this->getController();
-
-        if (is_null($controllerClass)) {
-            throw new NotFoundException();
-        }
-
-        $controller = new $controllerClass($this);
-
-        $controllerMethod = $this->getMethod();
-
-        if (method_exists($controller, $controllerMethod)) {
-            return $controller->{$controllerMethod}();
-        }
-        
-        throw new MethodDoesNotExistException();
     }
 
     public function setParam(string $key, $value) {

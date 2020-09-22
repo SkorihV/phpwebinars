@@ -6,14 +6,14 @@
  * Time: 15:15
  */
 
-namespace App\Category;
+namespace App\Data\Category;
 
 
-use App\CategoryService;
-use App\ProductImageService;
-use App\Renderer;
-use App\Request;
-use App\Response;
+use App\Data\CategoryService;
+use App\Data\ProductService;
+use App\Renderer\Renderer;
+use App\Http\Request;
+use App\Http\Response;
 use App\Router\Route;
 
 class CategoryController

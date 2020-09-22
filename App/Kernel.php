@@ -62,12 +62,18 @@ class Kernel
     {
         try {
             $response = (new Dispatcher($this->di))->dispatch();
+            echo $response;
+
         } catch (NotFoundException $e) {
             //404
+            echo "404";
         } catch (ControllerDoesNotExistException | MethodDoesNotExistException $e) {
             //500
+            echo "<pre>";
+            echo "500 ControllerDoesNotExistException | MethodDoesNotExistException  \n" .  $e;
         } catch (ExpectToRecieveResponceObjectException $e) {
             //500
+            echo "500  ExpectToRecieveResponceObjectException \n"  .  $e;
         } catch (\ReflectionException $e) {
             //500
         }

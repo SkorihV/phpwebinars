@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Product;
+namespace App\Data\Product;
 
 use App\Db\Db;
-use App\Request;
-use App\ProductImageService;
+use App\Http\Request;
+use App\Data\ProductImageService;
 
 class ProductService {
     public  function getListCount() {
@@ -17,7 +17,7 @@ class ProductService {
         $products = Db::fetchAll($query);
 
         foreach ($products as &$product) {
-            $product['images'] = ProductService::getListByProductId($product['id']);
+            $product['images'] = ProductImage::getListByProductId($product['id']);
 
         }
 

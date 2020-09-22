@@ -8,14 +8,15 @@
  */
 namespace App\Controller;
 
-use App\Renderer;
+use App\Http\Response;
+use App\Renderer\Renderer;
 use App\Router\Route;
 
 class AbstractController
 {
     /**
      * @var Renderer
-     * @onInit(App\Renderer)
+     * @onInit(App\Renderer\Renderer)
      */
     protected $renderer;
 
@@ -26,24 +27,25 @@ class AbstractController
     protected $route;
 
     /**
+     * @var Response
+     * @onInit(App\Http\Response)
+     */
+    protected $response;
+
+    /**
      * @param string $template
      * @param array $data
      */
     public function render(string $template, array $data = [])
     {
-//        $smarty = Renderer::getSmarty();
-//
-//        foreach ($data as $key => $value) {
-//            $smarty->assign($key, $value);
-//        }
-//
-//        return $smarty->display($template);
+        $body = $this->renderer->render($template, $data);
+        $this->response->setBody($body);
 
-        $this->renderer->render($template, $data);
+        return $this->response;
     }
 
     public function redirect(string $url)
     {
-
+        return $this->response->setRedirectUrl($url);
     }
 }

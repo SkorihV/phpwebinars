@@ -7,10 +7,10 @@
  * Time: 11:13
  */
 
-namespace App\Product;
+namespace App\Data\Product;
 
 use App\CategoryService;
-use App\Category\CategoryModel;
+use App\Data\Category\CategoryModel;
 use App\Controller\AbstractController;
 
 use App\Http\Request;
@@ -128,7 +128,8 @@ class ProductController extends AbstractController
 
             /*конец загрузки изображений*/
 
-            $response->redirect('/products/list');
+            return $this->redirect('/products/list');
+            //$response->redirect('/products/list');
         }
 
         $categories = $categoryService->getList();
@@ -186,7 +187,7 @@ class ProductController extends AbstractController
             $productImageService->uploadImages($productId, $uploadImages);
 
             if($productId){
-                $response->redirect('/products/list');
+               return $this->redirect('/products/list');
             } else {
                 die("Произошла ошибка с отправлением данных");
             }
@@ -218,7 +219,7 @@ class ProductController extends AbstractController
 
 
         if($deleted){
-            $response->redirect('/products/list');
+           return $this->redirect('/products/list');
         } else {
             die("Произошла ошибка с отправлением данных");
         }

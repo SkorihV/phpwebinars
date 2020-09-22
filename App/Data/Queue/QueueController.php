@@ -7,14 +7,14 @@
  * Time: 15:29
  */
 
-namespace App\Queue;
+namespace App\Data\Queue;
 
-use App\Renderer;
-use App\Request;
-use App\Response;
+use App\Controller\AbstractController;
+use App\Renderer\Renderer;
+use App\Http\Request;
 use App\TasksQueue;
 
-class QueueController
+class QueueController extends AbstractController
 {
     
     public function list(){
@@ -28,7 +28,7 @@ class QueueController
         $id = Request::getIntFromGet('id');
 
         TasksQueue::runById($id);
-        Response::redirect('/queue/list');
+        $this->redirect('/queue/list');
     }
 
 }

@@ -6,7 +6,7 @@
  * Time: 13:38
  */
 
-namespace App\Product;
+namespace App\Data\Product;
 
 
 class ProductImageModel
