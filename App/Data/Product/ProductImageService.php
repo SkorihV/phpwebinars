@@ -252,7 +252,12 @@ class ProductImageService {
 
 
     protected function getUploadDirForProduct(int $productId) {
+        if(!file_exists(APP_UPLOAD_PRODUCTS_DIR)){
+            mkdir(APP_UPLOAD_PRODUCTS_DIR);  // создаем папку с id товара если такой нет
+        }
+
         $path = APP_UPLOAD_PRODUCTS_DIR . '/' . $productId; // формируем адрес пусти для файлов конкретного товара по его ID
+
         if(!file_exists($path)){
             mkdir($path);  // создаем папку с id товара если такой нет
         }

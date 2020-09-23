@@ -8,6 +8,7 @@
  */
 namespace App\Controller;
 
+use App\Http\Request;
 use App\Http\Response;
 use App\Renderer\Renderer;
 use App\Router\Route;
@@ -31,6 +32,12 @@ class AbstractController
      * @onInit(App\Http\Response)
      */
     protected $response;
+
+    /**
+     * @var Request
+     * @onInit(App\Http\Request)
+     */
+    protected $request;
 
     /**
      * @param string $template

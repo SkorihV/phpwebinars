@@ -2,7 +2,7 @@
 
 
 use App\Data\Category\CategoryController;
-use App\Data\Import\importController;
+use App\Data\Import\ImportController;
 use App\Data\Product\ProductController;
 use App\Data\Queue\QueueController;
 

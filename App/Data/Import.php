@@ -3,18 +3,22 @@
 namespace App\Data;
 
 use App\Db\Db;
+use App\Data\Product\ProductImageService;
+use App\Data\Product\ProductService;
 
 class Import
 {
     public static function productFromFileTask(array $params) {
 
-        $fileName = $params['fileName'] ?? null;
+        $categoryService = new CategoryService();
+        $productService = new ProductService();
+        $productImageService = new ProductImageService();
 
+        $fileName = $params['filename'] ?? null;
 
         if (is_null($fileName)) {
             return false;
         }
-
 
         $filePath = APP_PUBLIC_DIR . '/' . 'import/' . $fileName;
 
@@ -55,13 +59,10 @@ class Import
 
             
             $categoryName = $productData['category_name'];
-
-
-
-            $category = CategoryService::getByName($categoryName);
+            $category = $categoryService->getByName($categoryName);
             if (empty($category)) {
 //        continue;
-                $categoryId = CategoryService::add([
+                $categoryId = $categoryService->add([
                     'name' => $categoryName
                 ]);
             }else{
@@ -70,26 +71,26 @@ class Import
 
             $product['category_id'] = $categoryId;
 
-            $targetProduct = ProductImageService::getByField($mainField, $product[$mainField]);
+            $targetProduct = $productService->getByField($mainField, $product[$mainField]);
             if (empty($targetProduct)) {
-                $productId = ProductImageService::add($product);
+                $productId = $productService->add($product);
             } else {
                 $productId = $targetProduct['id'];
                 $targetProduct = array_merge($targetProduct, $product);
-                ProductImageService::updateById($productId, $targetProduct);
+                $productService->updateById($productId, $targetProduct);
             }
 
 
             $productData['image_urls'] = explode("\n", $productData['image_urls']);
-            $productData['image_urls'] = array_map(function ($item){
+            $productData['image_urls'] = array_map(function ($item) {
                 return trim($item);
-            },$productData['image_urls']);
-            $productData['image_urls'] = array_filter($productData['image_urls'], function ($item){
+            }, $productData['image_urls']);
+            $productData['image_urls'] = array_filter($productData['image_urls'], function ($item) {
                 return !empty($item);
             });
 
             foreach ($productData['image_urls'] as $imageUrl) {
-                ProductImageService::uploadImagesByUrl($productId, $imageUrl );
+                $productImageService->uploadImagesByUrl($productId, $imageUrl );
             }
         }
         return true;

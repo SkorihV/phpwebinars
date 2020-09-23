@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Config;
+
 use App\Config\Exception\ConfigDirectoryNotFoundException;
 use App\FS\FS;
+
 use ArrayAccess;
 use Iterator;
 
@@ -30,7 +32,7 @@ class Config implements ArrayAccess, Iterator
     public function __construct(array $config)
     {
         foreach ($config as $key => $value) {
-            if (is_array($value)){
+            if (is_array($value)) {
                 $value = new self($value);
             }
             $this->{$key} = $value;
@@ -119,7 +121,7 @@ class Config implements ArrayAccess, Iterator
         $appConfigs = [];
 
         foreach ($fileList as $fileConfig) {
-            if ( strpos($fileConfig, 'conf.d') !== false) {
+            if (strpos($fileConfig, 'conf.d') !== false) {
                 $config = static::parseConfigPath($fileConfig, $dirname . '/conf.d/');
                 $namePath = $config['namePath'];
                 $src = [$namePath => $config['src']];
@@ -158,7 +160,7 @@ class Config implements ArrayAccess, Iterator
 
     }
 
-    private static function parseConfigPath(string  $configFilePath, string $replacePart = '')
+    private static function parseConfigPath(string $configFilePath, string $replacePart = '')
     {
         if (!file_exists($configFilePath)) {
             throw new ConfigDirectoryNotFoundException($configFilePath);

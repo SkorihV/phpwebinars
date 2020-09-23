@@ -2,6 +2,10 @@
 
 namespace App\Http;
 
+/**
+ * Class Request
+ * @package App\Http
+ */
 class Request
 {
     public static function getIntFromGet(string $key, $default = 0){

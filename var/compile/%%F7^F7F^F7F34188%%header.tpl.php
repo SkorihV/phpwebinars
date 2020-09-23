@@ -1,4 +1,4 @@
-<?php /* Smarty version 2.6.31, created on 2020-08-06 13:18:16
+<?php /* Smarty version 2.6.31, created on 2020-09-23 14:35:19
          compiled from header.tpl */ ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -22,6 +22,7 @@
 				<li class="nav-item"><a class="nav-link" href="/products/list">Товары</a></li>
 				<li class="nav-item"><a class="nav-link" href="/categories/list">Категории</a></li>
 				<li class="nav-item"><a class="nav-link" href="/imports/index">Импорт товаров</a></li>
+				<li class="nav-item"><a class="nav-link" href="/user/register">Регистрация</a></li>
 			</ul>
 		</div>
 	</div>

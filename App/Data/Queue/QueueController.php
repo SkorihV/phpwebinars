@@ -12,7 +12,7 @@ namespace App\Data\Queue;
 use App\Controller\AbstractController;
 use App\Renderer\Renderer;
 use App\Http\Request;
-use App\TasksQueue;
+use App\Data\TasksQueue;
 
 class QueueController extends AbstractController
 {
@@ -20,15 +20,18 @@ class QueueController extends AbstractController
     public function list(){
         $tasks = TasksQueue::getTaskList();
 
+        $smarty = Renderer::getSmarty();
+        $smarty->assign('tasks', $tasks);
+        $smarty->display('queue/list.tpl');
 
-        Renderer::getSmarty()->assign('tasks', $tasks);
-        Renderer::getSmarty()->display('queue/list.tpl');
+//        Renderer::getSmarty()->assign('tasks', $tasks);
+//        Renderer::getSmarty()->display('queue/list.tpl');
     }
     public function run(){
         $id = Request::getIntFromGet('id');
 
         TasksQueue::runById($id);
-        $this->redirect('/queue/list');
+        return $this->redirect('/queue/list');
     }
 
 }

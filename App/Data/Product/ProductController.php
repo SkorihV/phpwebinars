@@ -9,7 +9,7 @@
 
 namespace App\Data\Product;
 
-use App\CategoryService;
+use App\Data\CategoryService;
 use App\Data\Category\CategoryModel;
 use App\Controller\AbstractController;
 

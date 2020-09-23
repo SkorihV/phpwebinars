@@ -111,7 +111,7 @@ class TasksQueue
         if(!empty($newTaskProcess)) {
             return false;
         }
-
+        echo "new task found";
         return static::run($newTaskProcess);
 
     }

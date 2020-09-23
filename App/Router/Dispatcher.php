@@ -77,6 +77,7 @@ class Dispatcher
 
         if (!($response instanceof Response)) {
             throw new ExpectToRecieveResponceObjectException();
+
         }
 
         return $response;
